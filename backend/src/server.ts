@@ -11,6 +11,7 @@ app.get("/api/status", (req: Request, res: Response) => {
   res.json({ message: "Backend is running" });
 });
 
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
