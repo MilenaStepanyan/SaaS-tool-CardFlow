@@ -10,7 +10,7 @@ app.use(express.json());
 app.get("/api/status", (req: Request, res: Response) => {
   res.json({ message: "Backend is running" });
 });
-app.use("/user",authRouter)
+app.use("/api/user",authRouter)
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
