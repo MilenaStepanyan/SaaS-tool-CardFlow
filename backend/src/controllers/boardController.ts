@@ -54,7 +54,7 @@ export const getBoardById = async (
   try {
     const { boardId } = req.params;
     const [rows] = await promisePool.query<RowDataPacket[]>(
-      `SELECT * FROM board WHERE id = ? LIMIT 1`,
+      `SELECT * FROM boards WHERE id = ? LIMIT 1`,
       [boardId]
     );
     if (rows.length === 0) {
