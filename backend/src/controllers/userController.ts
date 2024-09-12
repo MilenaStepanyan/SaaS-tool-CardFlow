@@ -25,13 +25,10 @@ export const registerUser = async(
         return res.status(500).json({msg:"Server Error"})
     }
 }
-// export const loginUser = async(req:Request,res:Response):Promise<Response>=>{
-// try{
-//     const {username,password} = req.body
-//     if(!username||!password){
-//         return res.status
-//     }
-// }catch{
-
-// }
-// }
+export const loginUser = async(req:Request,res:Response)=>{
+try{
+   //
+}catch{
+//
+}
+}
