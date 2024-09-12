@@ -2,7 +2,7 @@ import { STATUS_CODES } from "../utils/statusCodes";
 import promisePool from "../pool-connection/database";
 import { Request, Response } from "express";
 import { ResultSetHeader } from "mysql2";
-
+import { RowDataPacket } from "mysql2";
 export const createBoard = async (
   req: Request,
   res: Response
@@ -34,4 +34,21 @@ export const getBoard = async (req:Request,res:Response):Promise<Response>=>{
       } catch (error) {
         return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({ message: "Error fetching boards" });
       }
+}
+export const getBoardById = async(req:Request,res:Response):Promise<Response>=>{
+    try{
+        const {boardId} = req.params
+        const [rows] = await promisePool.query<RowDataPacket[]>(
+            `SELECT * FROM board WHERE id = ? LIMIT 1`,
+            [boardId]
+        )
+        if(rows.length === 0){
+            return res.status(STATUS_CODES.NOT_FOUND).json({msg:"Boards not found"})
+        }
+        return res.status(STATUS_CODES.OK).json({board:rows[0]})
+    }catch(Error){
+        console.log(Error);
+        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server Error"})
+    }
+
 }
