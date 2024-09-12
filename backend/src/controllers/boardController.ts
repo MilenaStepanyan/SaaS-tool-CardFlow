@@ -27,3 +27,11 @@ export const createBoard = async (
       .json({ msg: "Server error" });
   }
 };
+export const getBoard = async (req:Request,res:Response):Promise<Response>=>{
+    try {
+        const [boards] = await promisePool.query(`SELECT * FROM boards WHERE user_id=?`, [req.user]);
+       return res.status(STATUS_CODES.OK).json(boards);
+      } catch (error) {
+        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({ message: "Error fetching boards" });
+      }
+}
