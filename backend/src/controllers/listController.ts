@@ -29,3 +29,10 @@ export const createList = async (
       .json({ msg: "Server error" });
   }
 };
+
+export const getLists = async (
+    req: Request,
+    res: Response
+  ) => {
+    ///
+  }
