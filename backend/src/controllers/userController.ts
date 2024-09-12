@@ -45,7 +45,8 @@ export const loginUser = async (
         .json({ msg: "Missing required files" });
     }
     const [rows]: [RowDataPacket[], any] = await promisePool.query(
-      `SELECT * FROM users WHERE username=?`
+      `SELECT * FROM users WHERE username=?`,
+      [username]
     );
     if (rows.length === 0) {
       return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "User does not exist" });
