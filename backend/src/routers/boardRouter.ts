@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { createBoard } from "../controllers/boardController";
+import { createBoard, getBoard } from "../controllers/boardController";
 import { verifyToken } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post("/", verifyToken, createBoard);
+router.post("/create", verifyToken, createBoard);
+router.get("/get", verifyToken, getBoard);
 export default router
