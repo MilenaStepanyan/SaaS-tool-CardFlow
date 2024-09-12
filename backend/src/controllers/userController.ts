@@ -2,7 +2,10 @@ import promisePool from "../pool-connection/database";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
-
+const SECRET_KEY = process.env.JWT_SECRET
+if(!SECRET_KEY){
+    throw new Error ('Secret Key Required')
+}
 export const registerUser = async(
     req:Request,res:Response
     ): Promise<Response> =>{
@@ -22,3 +25,13 @@ export const registerUser = async(
         return res.status(500).json({msg:"Server Error"})
     }
 }
+// export const loginUser = async(req:Request,res:Response):Promise<Response>=>{
+// try{
+//     const {username,password} = req.body
+//     if(!username||!password){
+//         return res.status
+//     }
+// }catch{
+
+// }
+// }
