@@ -72,3 +72,34 @@ export const getListsById = async (
       .json({ msg: "Server error" });
   }
 };
+export const updateList = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { listId } = req.params;
+    const { title } = req.body;
+
+    if (!title) {
+      return res
+        .status(STATUS_CODES.BAD_REQUEST)
+        .json({ msg: "Missing required fields" });
+    }
+
+    const [result] = await promisePool.query<ResultSetHeader>(
+      `UPDATE lists SET name = ?, updated_at = NOW() WHERE id = ?`,
+      [title, listId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "List not found" });
+    }
+
+    return res.status(STATUS_CODES.OK).json({ msg: "List updated" });
+  } catch (Error) {
+    console.log(Error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server error" });
+  }
+};
