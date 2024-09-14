@@ -50,3 +50,18 @@ export const getLists = async (
       .json({ msg: "Server error" });
   }
 };
+
+export const getListsById = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+   //
+  } catch (Error) {
+    console.log(Error);
+   return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server error" });
+  }
+};
+
