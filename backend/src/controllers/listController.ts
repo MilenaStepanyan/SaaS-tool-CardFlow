@@ -30,14 +30,23 @@ export const createList = async (
   }
 };
 
-// export const getLists = async (
-//     req: Request,
-//     res: Response
-//   ): Promise<Response> => {
-//     try{
+export const getLists = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { boardId } = req.params;
 
-//     }catch(Error){
-//         console.log(Error);
-//         res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server error"})
-//     }
-//   }
+    const [rows]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT * FROM lists WHERE board_id = ?`,
+      [boardId]
+    );
+
+    return res.status(STATUS_CODES.OK).json({ lists: rows });
+  } catch (Error) {
+    console.log(Error);
+   return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server error" });
+  }
+};
