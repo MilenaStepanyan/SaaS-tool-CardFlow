@@ -45,7 +45,7 @@ export const getLists = async (
     return res.status(STATUS_CODES.OK).json({ lists: rows });
   } catch (Error) {
     console.log(Error);
-   return res
+    return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
   }
@@ -54,14 +54,21 @@ export const getLists = async (
 export const getListsById = async (
   req: Request,
   res: Response
-) => {
+): Promise<Response> => {
   try {
-   //
+    const { listId } = req.params;
+    const [rows]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT FROM lists WHERE id = ?`,
+      [listId]
+    );
+    if (rows.length === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "List not found" });
+    }
+    return res.status(STATUS_CODES.OK).json({ list: rows[0] });
   } catch (Error) {
     console.log(Error);
-   return res
+    return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
   }
 };
-
