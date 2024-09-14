@@ -103,3 +103,26 @@ export const updateList = async (
       .json({ msg: "Server error" });
   }
 };
+export const deleteList = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { listId } = req.params;
+    const [rows] = await promisePool.query<ResultSetHeader>(
+      `DELETE FROM lists WHERE id = ?`,
+      [listId]
+    );
+    if (rows.affectedRows === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "List Not Found" });
+    }
+    return res
+      .status(STATUS_CODES.OK)
+      .json({ msg: "List deleted successfully" });
+  } catch (Error) {
+    console.log(Error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
+};
