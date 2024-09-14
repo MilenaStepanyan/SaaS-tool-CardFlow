@@ -30,9 +30,14 @@ export const createList = async (
   }
 };
 
-export const getLists = async (
-    req: Request,
-    res: Response
-  ) => {
-    ///
-  }
+// export const getLists = async (
+//     req: Request,
+//     res: Response
+//   ): Promise<Response> => {
+//     try{
+
+//     }catch(Error){
+//         console.log(Error);
+//         res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server error"})
+//     }
+//   }
