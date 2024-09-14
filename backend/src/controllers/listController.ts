@@ -19,7 +19,7 @@ export const createList = async (
     }
     const [result] = await promisePool.query<ResultSetHeader>(
       `INSERT INTO lists (name, board_id, created_at, updated_at) VALUES (?, ?, NOW(), NOW())`,
-      [name, boardId]
+      [title, boardId]
     );
     return res.status(STATUS_CODES.CREATED).json({ listId: result.insertId });
   } catch (Error) {
@@ -58,7 +58,7 @@ export const getListsById = async (
   try {
     const { listId } = req.params;
     const [rows]: [RowDataPacket[], any] = await promisePool.query(
-      `SELECT FROM lists WHERE id = ?`,
+      `SELECT * FROM lists WHERE id = ?`,
       [listId]
     );
     if (rows.length === 0) {

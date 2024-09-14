@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import authRouter from "./routers/userRouter"
 import boardRouter from "./routers/boardRouter"
+import listRouter from "./routers/listRouter"
 const app = express();
 const PORT = 4000;
 
@@ -13,6 +14,7 @@ app.get("/api/status", (req: Request, res: Response) => {
 });
 app.use("/api/user",authRouter)
 app.use("/api/board",boardRouter)
+app.use("/api",listRouter)
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
