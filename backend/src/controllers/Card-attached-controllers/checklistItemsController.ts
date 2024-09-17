@@ -89,4 +89,47 @@ export const addItem = async (req: Request, res: Response): Promise<Response> =>
         .json({ msg: "Server Error" });
     }
   };
+  export const updateItem = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { itemId } = req.params;
+      const { description, is_completed } = req.body;
+      if (description === undefined && is_completed === undefined) {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ msg: "Nothing to update" });
+      }
+  
+      const updateFields = [];
+      const queryParams = [];
+  
+      if (description !== undefined) {
+        updateFields.push("description = ?");
+        queryParams.push(description);
+      }
+      if (is_completed !== undefined) {
+        updateFields.push("is_completed = ?");
+        queryParams.push(is_completed);
+      }
+  
+      queryParams.push(itemId);
+  
+      const [result] = await promisePool.query<ResultSetHeader>(
+        `UPDATE checklist_items SET ${updateFields.join(", ")}, updated_at = NOW() WHERE id = ?`,
+        queryParams
+      );
+  
+      if (result.affectedRows === 0) {
+        return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Checklist item not found" });
+      }
+  
+      return res
+        .status(STATUS_CODES.OK)
+        .json({ msg: "Checklist item updated successfully" });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
+  };
   
