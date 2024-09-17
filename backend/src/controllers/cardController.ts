@@ -93,5 +93,28 @@ export const getCardById = async (
   }
 };
 export const updateCard = async (req: Request, res: Response) => {
-    //
+  try {
+    const { cardId } = req.params;
+    const { title, description } = req.body;
+    if (!title) {
+      return res
+        .status(STATUS_CODES.BAD_REQUEST)
+        .json({ msg: "Missing required fields" });
+    }
+    const [result] = await promisePool.query<ResultSetHeader>(
+      `UPDATE cards SET name = ?,description = ?, updated_at = NOW() WHERE id = ?`,
+      [title, description || null, cardId]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Card not found" });
+    }
+    return res
+      .status(STATUS_CODES.OK)
+      .json({ msg: "Card updated successfully" });
+  } catch (Error) {
+    console.log(Error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
 };
