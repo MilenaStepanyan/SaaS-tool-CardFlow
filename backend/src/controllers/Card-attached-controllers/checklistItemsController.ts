@@ -38,4 +38,35 @@ export const addItem = async (req: Request, res: Response): Promise<Response> =>
         .json({ msg: "Server Error" });
     }
   };
+  export const getAllItems = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { checklistId } = req.params;
+      if (!checklistId) {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ msg: "Missing required field: checklistId" });
+      }
+  
+      const [checklistExist] = await promisePool.query<RowDataPacket[]>(
+        `SELECT id FROM checklists WHERE id = ?`,
+        [checklistId]
+      );
+      if (checklistExist.length === 0) {
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .json({ msg: "Checklist does not exist" });
+      }
+  
+      const [rows]: [RowDataPacket[], any] = await promisePool.query(
+        `SELECT * FROM checklist_items WHERE checklist_id = ?`,
+        [checklistId]
+      );
+      return res.status(STATUS_CODES.OK).json({ items: rows || [] });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
+  };
   
