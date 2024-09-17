@@ -63,5 +63,18 @@ export const getAllCards = async (req: Request, res: Response): Promise<Response
   }
 };
 export const getCardById = async(req:Request,res:Response)=>{
-//
+    try{
+        const {cardId} = req.params
+        const [rows]:[RowDataPacket[],any] = await promisePool.query(
+            `SELECT * FROM cards WHERE id=?`,
+            [cardId]
+        )
+        if(rows.length===0){
+            return res.status(STATUS_CODES.NOT_FOUND).json({msg:"Card does not exist"})
+        }
+        return res.status(STATUS_CODES.OK).json({card:rows[0]})
+    }catch(Error){
+        console.log(Error);
+        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server Error"})
+    }
 }
