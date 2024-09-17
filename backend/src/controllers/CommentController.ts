@@ -36,3 +36,17 @@ export const addComment = async (req: Request, res: Response) => {
       .json({ msg: "Server Error" });
   }
 };
+
+export const getAllCards = async (
+    req: Request,
+    res: Response
+  ) => {
+    try {
+     //
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
+  };
