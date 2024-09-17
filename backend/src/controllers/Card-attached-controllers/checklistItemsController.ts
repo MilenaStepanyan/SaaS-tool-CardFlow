@@ -69,4 +69,24 @@ export const addItem = async (req: Request, res: Response): Promise<Response> =>
         .json({ msg: "Server Error" });
     }
   };
+  export const getItemById = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { itemId } = req.params;
+      const [rows]: [RowDataPacket[], any] = await promisePool.query(
+        `SELECT * FROM checklist_items WHERE id = ?`,
+        [itemId]
+      );
+      if (rows.length === 0) {
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .json({ msg: "Checklist item does not exist" });
+      }
+      return res.status(STATUS_CODES.OK).json({ item: rows[0] });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
+  };
   
