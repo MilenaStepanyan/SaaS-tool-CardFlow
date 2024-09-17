@@ -68,3 +68,10 @@ export const createChecklist = async (
       .json({ msg: "Server Error" });
   }
 };
+
+export const getChecklistById = async (
+    req: Request,
+    res: Response
+  ) => {
+   //
+  };
