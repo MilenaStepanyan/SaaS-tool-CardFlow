@@ -119,5 +119,18 @@ export const updateCard = async (req: Request, res: Response):Promise<Response> 
   }
 };
 export const deleteCard = async(req:Request,res:Response)=>{
-//
+    try{
+        const {cardId} = req.params
+        const [result] = await promisePool.query<ResultSetHeader>(
+            `DELETE FROM cards WHERE id = ?`,
+            [cardId] 
+        )
+        if(result.affectedRows===0){
+            return res.status(STATUS_CODES.NOT_FOUND).json({msg:"Card not found"})
+        }
+        return res.status(STATUS_CODES.OK).json({msg:"Card deleted successfully"})
+    }catch(error){
+        console.log(error);
+        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server Error"})
+    }
 }
