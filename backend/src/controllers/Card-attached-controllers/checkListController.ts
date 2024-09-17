@@ -73,5 +73,22 @@ export const getChecklistById = async (
     req: Request,
     res: Response
   ) => {
-   //
+    try {
+      const { checklistId } = req.params;
+      const [rows]: [RowDataPacket[], any] = await promisePool.query(
+        `SELECT * FROM checklists WHERE id=?`,
+        [checklistId]
+      );
+      if (rows.length === 0) {
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .json({ msg: "Checklist does not exist" });
+      }
+      return res.status(STATUS_CODES.OK).json({ checklist: rows[0] });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
   };
