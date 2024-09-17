@@ -96,5 +96,18 @@ export const editComment = async (req: Request, res: Response):Promise<Response>
     }
   };
   export const deleteComment = async(req:Request,res:Response):Promise<Response>=>{
-      //
+      try{
+          const {commentId} = req.params
+          const [result] = await promisePool.query<ResultSetHeader>(
+              `DELETE FROM comments WHERE id = ?`,
+              [commentId] 
+          )
+          if(result.affectedRows===0){
+              return res.status(STATUS_CODES.NOT_FOUND).json({msg:"comment not found"})
+          }
+          return res.status(STATUS_CODES.OK).json({msg:"comment deleted successfully"})
+      }catch(error){
+          console.log(error);
+          return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server Error"})
+      }
   }
