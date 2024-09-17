@@ -4,3 +4,6 @@ import promisePool from "../pool-connection/database";
 import { ResultSetHeader } from "mysql2";
 import { RowDataPacket } from "mysql2";
 
+export const addComment = async (req:Request,res:Response)=>{
+    //
+}

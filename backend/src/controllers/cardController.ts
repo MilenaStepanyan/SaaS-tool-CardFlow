@@ -118,7 +118,7 @@ export const updateCard = async (req: Request, res: Response):Promise<Response> 
       .json({ msg: "Server Error" });
   }
 };
-export const deleteCard = async(req:Request,res:Response)=>{
+export const deleteCard = async(req:Request,res:Response):Promise<Response>=>{
     try{
         const {cardId} = req.params
         const [result] = await promisePool.query<ResultSetHeader>(
