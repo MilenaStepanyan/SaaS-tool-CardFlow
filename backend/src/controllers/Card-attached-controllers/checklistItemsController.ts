@@ -132,4 +132,26 @@ export const addItem = async (req: Request, res: Response): Promise<Response> =>
         .json({ msg: "Server Error" });
     }
   };
+  export const deleteItem = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { itemId } = req.params;
+      const [result] = await promisePool.query<ResultSetHeader>(
+        `DELETE FROM checklist_items WHERE id = ?`,
+        [itemId]
+      );
+  
+      if (result.affectedRows === 0) {
+        return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Checklist item not found" });
+      }
+  
+      return res
+        .status(STATUS_CODES.OK)
+        .json({ msg: "Checklist item deleted successfully" });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
+  };
   
