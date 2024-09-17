@@ -40,12 +40,21 @@ export const createCard = async (
 export const getAllCards = async (req: Request, res: Response) => {
   try {
     const { listId } = req.params;
-
+    if(!listId){
+        return res.status(STATUS_CODES.BAD_REQUEST).json({msg:"Missing required field list Id"})
+    }
+    const [listExist] = await promisePool.query<RowDataPacket[]>(
+        `SELECT id FROM lists WHERE id = ?`,
+        [listId]
+    )
+    if(listExist.length === 0){
+        return res.status(STATUS_CODES.NOT_FOUND).json({msg:"list does not exist"})
+    }
     const [rows]: [RowDataPacket[], any] = await promisePool.query(
       `SELECT * FROM cards WHERE list_id = ?`,
       [listId]
     );
-    return res.status(STATUS_CODES.OK).json({ cards: rows });
+    return res.status(STATUS_CODES.OK).json({ cards: rows || []  });
   } catch (Error) {
     console.log(Error);
     return res
