@@ -95,3 +95,6 @@ export const editComment = async (req: Request, res: Response):Promise<Response>
         .json({ msg: "Server Error" });
     }
   };
+  export const deleteComment = async(req:Request,res:Response):Promise<Response>=>{
+      //
+  }
