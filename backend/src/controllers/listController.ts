@@ -22,8 +22,8 @@ export const createList = async (
       [title, boardId]
     );
     return res.status(STATUS_CODES.CREATED).json({ listId: result.insertId });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
@@ -43,8 +43,8 @@ export const getLists = async (
     );
 
     return res.status(STATUS_CODES.OK).json({ lists: rows });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
@@ -65,8 +65,8 @@ export const getListsById = async (
       return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "List not found" });
     }
     return res.status(STATUS_CODES.OK).json({ list: rows[0] });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
@@ -96,8 +96,8 @@ export const updateList = async (
     }
 
     return res.status(STATUS_CODES.OK).json({ msg: "List updated" });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
@@ -119,8 +119,8 @@ export const deleteList = async (
     return res
       .status(STATUS_CODES.OK)
       .json({ msg: "List deleted successfully" });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });

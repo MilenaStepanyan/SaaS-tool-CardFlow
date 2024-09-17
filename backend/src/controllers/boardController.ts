@@ -3,7 +3,7 @@ import promisePool from "../pool-connection/database";
 import { Request, Response } from "express";
 import { ResultSetHeader } from "mysql2";
 import { RowDataPacket } from "mysql2";
-import { OkPacket } from "mysql2";
+
 
 export const createBoard = async (
   req: Request,
@@ -24,8 +24,8 @@ export const createBoard = async (
     return res
       .status(STATUS_CODES.CREATED)
       .json({ msg: "Board created successfully", boardId: result.insertId });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
@@ -63,8 +63,8 @@ export const getBoardById = async (
         .json({ msg: "Boards not found" });
     }
     return res.status(STATUS_CODES.OK).json({ board: rows[0] });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });
@@ -91,8 +91,8 @@ export const deleteBoardById = async (
     return res
       .status(STATUS_CODES.OK)
       .json({ msg: "Board deleted successfully" });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });

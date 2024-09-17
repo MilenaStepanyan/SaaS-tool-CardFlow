@@ -26,8 +26,8 @@ export const registerUser = async (
       [username, email, hashedPassword]
     );
     return res.status(STATUS_CODES.OK).json({ msg: "User Registered" });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });
@@ -64,8 +64,8 @@ export const loginUser = async (
     console.log(user);
 
     return res.json({ token });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });
