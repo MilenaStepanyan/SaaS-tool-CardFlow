@@ -69,45 +69,70 @@ export const getAllComments = async (
       .json({ msg: "Server Error" });
   }
 };
-export const editComment = async (req: Request, res: Response):Promise<Response> => {
-    try {
-      const { commentId } = req.params;
-      const { content } = req.body;
-      if (!content) {
-        return res
-          .status(STATUS_CODES.BAD_REQUEST)
-          .json({ msg: "Missing required fields" });
-      }
-      const [result] = await promisePool.query<ResultSetHeader>(
-        `UPDATE comments SET content = ?, updated_at = NOW() WHERE id = ?`,
-        [content, commentId]
-      );
-      if (result.affectedRows === 0) {
-        return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "comment not found" });
-      }
+export const editComment = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { commentId } = req.params;
+    const { content } = req.body;
+    if (!content) {
       return res
-        .status(STATUS_CODES.OK)
-        .json({ msg: "comment edited successfully" });
-    } catch (error) {
-      console.log(error);
-      return res
-        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
-        .json({ msg: "Server Error" });
+        .status(STATUS_CODES.BAD_REQUEST)
+        .json({ msg: "Missing required fields" });
     }
-  };
-  export const deleteComment = async(req:Request,res:Response):Promise<Response>=>{
-      try{
-          const {commentId} = req.params
-          const [result] = await promisePool.query<ResultSetHeader>(
-              `DELETE FROM comments WHERE id = ?`,
-              [commentId] 
-          )
-          if(result.affectedRows===0){
-              return res.status(STATUS_CODES.NOT_FOUND).json({msg:"comment not found"})
-          }
-          return res.status(STATUS_CODES.OK).json({msg:"comment deleted successfully"})
-      }catch(error){
-          console.log(error);
-          return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server Error"})
-      }
+    const [result] = await promisePool.query<ResultSetHeader>(
+      `UPDATE comments SET content = ?, updated_at = NOW() WHERE id = ?`,
+      [content, commentId]
+    );
+    if (result.affectedRows === 0) {
+      return res
+        .status(STATUS_CODES.NOT_FOUND)
+        .json({ msg: "comment not found" });
+    }
+    return res
+      .status(STATUS_CODES.OK)
+      .json({ msg: "comment edited successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
   }
+};
+export const deleteComment = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { commentId } = req.params;
+    const [commentExist] = await promisePool.query<RowDataPacket[]>(
+        `SELECT id FROM comments WHERE id = ?`,
+        [commentId]
+      );
+  
+      if (commentExist.length === 0) {
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .json({ msg: "Comment not found" });
+      }
+  
+    const [result] = await promisePool.query<ResultSetHeader>(
+      `DELETE FROM comments WHERE id = ?`,
+      [commentId]
+    );
+    if (result.affectedRows === 0) {
+      return res
+        .status(STATUS_CODES.NOT_FOUND)
+        .json({ msg: "comment not found" });
+    }
+    return res
+      .status(STATUS_CODES.OK)
+      .json({ msg: "comment deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
+};
