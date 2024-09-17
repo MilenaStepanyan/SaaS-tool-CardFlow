@@ -30,8 +30,8 @@ export const createCard = async (
       [title, description || null, listId]
     );
     return res.status(STATUS_CODES.OK).json({ cardId: result.insertId });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });
@@ -62,8 +62,8 @@ export const getAllCards = async (
       [listId]
     );
     return res.status(STATUS_CODES.OK).json({ cards: rows || [] });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });
@@ -85,8 +85,8 @@ export const getCardById = async (
         .json({ msg: "Card does not exist" });
     }
     return res.status(STATUS_CODES.OK).json({ card: rows[0] });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });
@@ -111,8 +111,8 @@ export const updateCard = async (req: Request, res: Response):Promise<Response> 
     return res
       .status(STATUS_CODES.OK)
       .json({ msg: "Card updated successfully" });
-  } catch (Error) {
-    console.log(Error);
+  } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server Error" });
