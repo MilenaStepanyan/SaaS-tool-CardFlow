@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addComment, deleteComment, editComment, getAllComments } from "../controllers/CommentController";
+import { addComment, deleteComment, editComment, getAllComments } from "../controllers/Card-attached-controllers/CommentController";
 
 const router = Router();
 
