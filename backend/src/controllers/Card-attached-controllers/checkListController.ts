@@ -36,3 +36,9 @@ export const createChecklist = async (
         .json({ msg: "Server Error" });
     }
   };
+  export const getAllChecklists = async (
+    req: Request,
+    res: Response
+  ) => {
+//
+  };
