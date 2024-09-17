@@ -37,7 +37,7 @@ export const createCard = async (
       .json({ msg: "Server Error" });
   }
 };
-export const getAllCards = async (req: Request, res: Response) => {
+export const getAllCards = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { listId } = req.params;
     if(!listId){
@@ -62,3 +62,6 @@ export const getAllCards = async (req: Request, res: Response) => {
       .json({ msg: "Server Error" });
   }
 };
+export const getCardById = async(req:Request,res:Response)=>{
+//
+}
