@@ -5,6 +5,24 @@ import { ResultSetHeader } from "mysql2";
 import { RowDataPacket } from "mysql2";
 import { OkPacket } from "mysql2";
 
-export const createCard = async (req:Request,res:Response)=>{
-    //
-}
+export const createCard = async (req: Request, res: Response) => {
+  try {
+    const { title, description } = req.body;
+    const { listId } = req.params;
+    if (!title) {
+      return res
+        .status(STATUS_CODES.BAD_REQUEST)
+        .json({ msg: "Missing required fields" });
+    }
+    const [result] =await promisePool.query<ResultSetHeader>(
+        `INSERT INTO cards (name, description,list_id, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())`,
+        [title,description,listId]
+    )
+    return res.status(STATUS_CODES.OK).json({cardId:result.insertId})
+  } catch (Error) {
+    console.log(Error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
+};
