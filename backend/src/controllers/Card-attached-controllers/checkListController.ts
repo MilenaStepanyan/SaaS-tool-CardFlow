@@ -92,6 +92,29 @@ export const getChecklistById = async (
         .json({ msg: "Server Error" });
     }
   };
-  export const updateChecklist= async (req: Request, res: Response) => {
-//
+  export const updateChecklist = async (req: Request, res: Response):Promise<Response> => {
+    try {
+      const { checklistId } = req.params;
+      const { name } = req.body;
+      if (!name) {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ msg: "Missing required fields" });
+      }
+      const [result] = await promisePool.query<ResultSetHeader>(
+        `UPDATE checklists SET name = ?, updated_at = NOW() WHERE id = ?`,
+        [name, checklistId]
+      );
+      if (result.affectedRows === 0) {
+        return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Checklist not found" });
+      }
+      return res
+        .status(STATUS_CODES.OK)
+        .json({ msg: "Checklist updated successfully" });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
   };
