@@ -4,7 +4,7 @@ import promisePool from "../pool-connection/database";
 import { ResultSetHeader } from "mysql2";
 import { RowDataPacket } from "mysql2";
 
-export const addComment = async (req: Request, res: Response) => {
+export const addComment = async (req: Request, res: Response):Promise<Response> => {
   try {
     const { cardId } = req.params;
     const { content } = req.body;
@@ -69,3 +69,6 @@ export const getAllComments = async (
       .json({ msg: "Server Error" });
   }
 };
+export const editComment = async (req: Request, res: Response) => {
+   //
+  };
