@@ -92,7 +92,7 @@ export const getCardById = async (
       .json({ msg: "Server Error" });
   }
 };
-export const updateCard = async (req: Request, res: Response) => {
+export const updateCard = async (req: Request, res: Response):Promise<Response> => {
   try {
     const { cardId } = req.params;
     const { title, description } = req.body;
@@ -118,3 +118,6 @@ export const updateCard = async (req: Request, res: Response) => {
       .json({ msg: "Server Error" });
   }
 };
+export const deleteCard = async(req:Request,res:Response)=>{
+//
+}
