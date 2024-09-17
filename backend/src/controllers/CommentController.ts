@@ -14,7 +14,14 @@ export const addComment = async (req: Request, res: Response) => {
         .status(STATUS_CODES.BAD_REQUEST)
         .json({ msg: "Missing required fields" });
     }
-   
+    const [cardExist] : [RowDataPacket[], any]= await promisePool.query(
+      `SELECT id FROM cards WHERE id = ?`,
+      [cardId]
+    );
+
+    if (cardExist.length === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Card not found" });
+    }
     const [result] = await promisePool.query<ResultSetHeader>(
       `INSERT INTO comments (content, card_id, user_id, created_at) VALUES (?, ?, ?, NOW())`,
       [content, cardId, userId]
