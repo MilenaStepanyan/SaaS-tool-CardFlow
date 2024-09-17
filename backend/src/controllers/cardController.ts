@@ -37,24 +37,31 @@ export const createCard = async (
       .json({ msg: "Server Error" });
   }
 };
-export const getAllCards = async (req: Request, res: Response): Promise<Response> => {
+export const getAllCards = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
     const { listId } = req.params;
-    if(!listId){
-        return res.status(STATUS_CODES.BAD_REQUEST).json({msg:"Missing required field list Id"})
+    if (!listId) {
+      return res
+        .status(STATUS_CODES.BAD_REQUEST)
+        .json({ msg: "Missing required field list Id" });
     }
     const [listExist] = await promisePool.query<RowDataPacket[]>(
-        `SELECT id FROM lists WHERE id = ?`,
-        [listId]
-    )
-    if(listExist.length === 0){
-        return res.status(STATUS_CODES.NOT_FOUND).json({msg:"list does not exist"})
+      `SELECT id FROM lists WHERE id = ?`,
+      [listId]
+    );
+    if (listExist.length === 0) {
+      return res
+        .status(STATUS_CODES.NOT_FOUND)
+        .json({ msg: "list does not exist" });
     }
     const [rows]: [RowDataPacket[], any] = await promisePool.query(
       `SELECT * FROM cards WHERE list_id = ?`,
       [listId]
     );
-    return res.status(STATUS_CODES.OK).json({ cards: rows || []  });
+    return res.status(STATUS_CODES.OK).json({ cards: rows || [] });
   } catch (Error) {
     console.log(Error);
     return res
@@ -62,19 +69,29 @@ export const getAllCards = async (req: Request, res: Response): Promise<Response
       .json({ msg: "Server Error" });
   }
 };
-export const getCardById = async(req:Request,res:Response)=>{
-    try{
-        const {cardId} = req.params
-        const [rows]:[RowDataPacket[],any] = await promisePool.query(
-            `SELECT * FROM cards WHERE id=?`,
-            [cardId]
-        )
-        if(rows.length===0){
-            return res.status(STATUS_CODES.NOT_FOUND).json({msg:"Card does not exist"})
-        }
-        return res.status(STATUS_CODES.OK).json({card:rows[0]})
-    }catch(Error){
-        console.log(Error);
-        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server Error"})
+export const getCardById = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { cardId } = req.params;
+    const [rows]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT * FROM cards WHERE id=?`,
+      [cardId]
+    );
+    if (rows.length === 0) {
+      return res
+        .status(STATUS_CODES.NOT_FOUND)
+        .json({ msg: "Card does not exist" });
     }
-}
+    return res.status(STATUS_CODES.OK).json({ card: rows[0] });
+  } catch (Error) {
+    console.log(Error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
+};
+export const updateCard = async (req: Request, res: Response) => {
+    //
+};
