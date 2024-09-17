@@ -92,3 +92,6 @@ export const getChecklistById = async (
         .json({ msg: "Server Error" });
     }
   };
+  export const updateChecklist= async (req: Request, res: Response) => {
+//
+  };
