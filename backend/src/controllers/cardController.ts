@@ -5,7 +5,10 @@ import { ResultSetHeader } from "mysql2";
 import { RowDataPacket } from "mysql2";
 import { OkPacket } from "mysql2";
 
-export const createCard = async (req: Request, res: Response):Promise<Response> => {
+export const createCard = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
     const { title, description } = req.body;
     const { listId } = req.params;
@@ -34,6 +37,19 @@ export const createCard = async (req: Request, res: Response):Promise<Response> 
       .json({ msg: "Server Error" });
   }
 };
-export const getAllCards = async (req:Request,res:Response)=>{
-    //
-}
+export const getAllCards = async (req: Request, res: Response) => {
+  try {
+    const { listId } = req.params;
+
+    const [rows]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT * FROM cards WHERE list_id = ?`,
+      [listId]
+    );
+    return res.status(STATUS_CODES.OK).json({ cards: rows });
+  } catch (Error) {
+    console.log(Error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
+};
