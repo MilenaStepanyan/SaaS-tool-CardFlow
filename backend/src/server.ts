@@ -7,7 +7,7 @@ import cardRouter from "./routers/cardRouter";
 import commentRouter from "./routers/commentRouter";
 import checklistRouter from "./routers/checklistRouter";
 import itemRouter from "./routers/checklist-itemRouter";
-import teamRouter from "./routers/teamRouter"
+import teamRouter from "./routers/teamRouter";
 const app = express();
 const PORT = 4000;
 
