@@ -131,3 +131,45 @@ export const deleteTeam = async (req: Request, res: Response) => {
       .json({ msg: "Server Error" });
   }
 };
+export const deleteMember = async (req: Request, res: Response) => {
+  const { teamId, userId } = req.params;
+  const { requestingUserId } = req.body;
+
+  try {
+    const [adminCheck]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT role FROM team_members WHERE team_id = ? AND user_id = ?`,
+      [teamId, requestingUserId]
+    );
+
+    if (adminCheck.length === 0 || adminCheck[0].role !== "admin") {
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        msg: "Only admins can remove members",
+      });
+    }
+
+    const [memberCheck]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT id FROM team_members WHERE team_id = ? AND user_id = ?`,
+      [teamId, userId]
+    );
+
+    if (memberCheck.length === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        msg: "Member not found in the team",
+      });
+    }
+
+    await promisePool.query(
+      `DELETE FROM team_members WHERE team_id = ? AND user_id = ?`,
+      [teamId, userId]
+    );
+
+    return res.status(STATUS_CODES.OK).json({
+      msg: "Member removed successfully from the team",
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
+};
