@@ -64,3 +64,28 @@ export const addMember = async (req: Request, res: Response) => {
       .json({ msg: "Server Error" });
   }
 };
+export const getTeamsForUser = async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    try {
+      const [teams]: [RowDataPacket[], any] = await promisePool.query(
+        `SELECT t.id, t.name, t.description 
+         FROM teams t 
+         JOIN team_members tm ON t.id = tm.team_id
+         WHERE tm.user_id = ?`,
+        [userId]
+      );
+  
+      if (teams.length === 0) {
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .json({ msg: "No teams found for this user" });
+      }
+  
+      return res.status(STATUS_CODES.OK).json({ teams });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
+  };
