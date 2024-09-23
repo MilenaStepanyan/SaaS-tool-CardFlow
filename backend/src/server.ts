@@ -7,6 +7,7 @@ import cardRouter from "./routers/cardRouter";
 import commentRouter from "./routers/commentRouter";
 import checklistRouter from "./routers/checklistRouter";
 import itemRouter from "./routers/checklist-itemRouter";
+import teamRouter from "./routers/teamRouter"
 const app = express();
 const PORT = 4000;
 
@@ -23,6 +24,7 @@ app.use("/api", cardRouter);
 app.use("/api", commentRouter);
 app.use("/api", checklistRouter);
 app.use("/api", itemRouter);
+app.use("/api", teamRouter);
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
