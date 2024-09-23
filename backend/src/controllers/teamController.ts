@@ -30,7 +30,13 @@ export const createTeam = async (req: Request, res: Response) => {
   }
 };
 export const addMember = async (req: Request, res: Response) => {
+    const {teamId,userId,role} =req.body
   try {
+    const [team] :[RowDataPacket[],any] = await promisePool.query(
+        `INSERT INTO team_members WHERE (team_id,user_id,role) VALUES (?, ?, ?)`,
+        [teamId,userId,role]
+    )
+    return res.status(STATUS_CODES.CREATED).json({msg:"Member added successfully to the team"})
   } catch (error) {
     console.log(error);
     return res
