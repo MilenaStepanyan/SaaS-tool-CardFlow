@@ -30,13 +30,33 @@ export const createTeam = async (req: Request, res: Response) => {
   }
 };
 export const addMember = async (req: Request, res: Response) => {
-    const {teamId,userId,role} =req.body
+  const { teamId, userId, role } = req.body;
   try {
-    const [team] :[RowDataPacket[],any] = await promisePool.query(
-        `INSERT INTO team_members WHERE (team_id,user_id,role) VALUES (?, ?, ?)`,
-        [teamId,userId,role]
-    )
-    return res.status(STATUS_CODES.CREATED).json({msg:"Member added successfully to the team"})
+    const [team]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT id FROM teams WHERE id=?`,
+      [teamId]
+    );
+    if (team.length === 0) {
+      return res
+        .status(STATUS_CODES.NOT_FOUND)
+        .json({ msg: "Team is not found" });
+    }
+    const [existingMember]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT id FROM team_members WHERE team_id = ? AND user_id = ?`,
+      [teamId, userId]
+    );
+    if (existingMember.length > 0) {
+      return res
+        .status(STATUS_CODES.CONFLICT)
+        .json({ msg: "Member is already in the team" });
+    }
+    await promisePool.query(
+      `INSERT INTO team_members (team_id,user_id,role) VALUES (?, ?, ?)`,
+      [teamId, userId, role]
+    );
+    return res
+      .status(STATUS_CODES.CREATED)
+      .json({ msg: "Member added successfully to the team" });
   } catch (error) {
     console.log(error);
     return res
