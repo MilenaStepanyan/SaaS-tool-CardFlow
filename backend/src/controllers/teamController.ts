@@ -90,9 +90,21 @@ export const getTeamsForUser = async (req: Request, res: Response) => {
   }
 };
 export const deleteTeam = async (req: Request, res: Response) => {
-    try{
-
-    }catch(error){
-        
+  try {
+    const { teamId } = req.params;
+    const [rows] = await promisePool.query<ResultSetHeader>(
+      `DELETE FROM teams WHERE id = ?`,
+      [teamId]
+    );
+    if (rows.affectedRows === 0) {
+      return res
+        .status(STATUS_CODES.NOT_FOUND)
+        .json({ msg: "Card is not found" });
     }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
 };
