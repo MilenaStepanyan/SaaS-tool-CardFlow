@@ -170,6 +170,33 @@ export const deleteMember = async (req: Request, res: Response) => {
     console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
-      .json({ msg: "Server Error" });
+      .json({ msg: "Server Error"});
   }
 };
+export const getTeamMembers = async (req: Request, res: Response) => {
+    const { teamId } = req.params;
+  
+    try {
+      const [members]: [RowDataPacket[], any] = await promisePool.query(
+        `SELECT tm.user_id, tm.role, u.name AS user_name
+         FROM team_members tm
+         JOIN users u ON tm.user_id = u.id
+         WHERE tm.team_id = ?`,
+        [teamId]
+      );
+  
+      if (members.length === 0) {
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .json({ msg: "No members found for this team" });
+      }
+  
+      return res.status(STATUS_CODES.OK).json({ members });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Server Error" });
+    }
+  };
+  
