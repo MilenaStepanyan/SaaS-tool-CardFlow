@@ -90,17 +90,40 @@ export const getTeamsForUser = async (req: Request, res: Response) => {
   }
 };
 export const deleteTeam = async (req: Request, res: Response) => {
+  const { teamId } = req.params;
+  const { ownerId } = req.body;
   try {
-    const { teamId } = req.params;
-    const [rows] = await promisePool.query<ResultSetHeader>(
+    const [teamCheck]: [RowDataPacket[], any] = await promisePool.query(
+      `SELECT owner_id FROM teams WHERE id = ?`,
+      [teamId]
+    );
+
+    if (teamCheck.length === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        msg: "Team not found",
+      });
+    }
+    if (teamCheck[0].owner_id !== ownerId) {
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        msg: "Only the team owner can delete the team",
+      });
+    }
+
+    await promisePool.query(`DELETE FROM team_members WHERE team_id = ?`, [
+      teamId,
+    ]);
+
+    const [rows]: [ResultSetHeader, any] = await promisePool.query(
       `DELETE FROM teams WHERE id = ?`,
       [teamId]
     );
+
     if (rows.affectedRows === 0) {
-      return res
-        .status(STATUS_CODES.NOT_FOUND)
-        .json({ msg: "Card is not found" });
+      return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Team not found" });
     }
+    return res
+      .status(STATUS_CODES.OK)
+      .json({ msg: "Team deleted successfully" });
   } catch (error) {
     console.log(error);
     return res
