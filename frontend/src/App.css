@@ -297,3 +297,15 @@ body {
     color: #4682B4; 
   }
 }
+.our-joiners{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap:10px;
+  margin: 30px;
+}
+.our-joiners p{
+  font-size: 20px;
+  font-family: "Charlie Text", sans-serif;
+}

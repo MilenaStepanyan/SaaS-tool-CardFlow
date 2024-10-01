@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../../public/logo.png";
 import form from "../../public/trello.webp";
+import joiners from "../../public/logos-horizonal.svg"
 const Home: React.FC = () => {
   return (
     <>
@@ -31,6 +32,10 @@ const Home: React.FC = () => {
           <div className="design">
             <img src={form} className="card-schema" alt="" />
           </div>
+        </div>
+        <div className="our-joiners">
+          <p>Join over 2,000,000 teams worldwide that are using Trello to get more done.</p>
+          <img src={joiners} alt="" />
         </div>
       </div>
     </>
