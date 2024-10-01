@@ -249,7 +249,9 @@ body {
 .button:not(:last-child) {
   margin-bottom: 64px;
 }
+
 .header {
+  
   background-color: white;
   display: flex;
   justify-content: space-around;
@@ -309,3 +311,67 @@ body {
   font-size: 20px;
   font-family: "Charlie Text", sans-serif;
 }
+.footer {
+  margin-top: 80px;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 40px 0;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.footer-section {
+  max-width: 300px;
+}
+
+.footer-section h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.footer-section p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.footer-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 10px 0;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #000000;
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #9932cc;
+}
+
+.social-icons a {
+  color: #f4f4f4;
+  margin: 0 10px;
+  font-size: 24px;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #4682b4;
+}
+
+.footer-bottom {
+  background-color: #e6e6fa;
+  padding: 10px 0;
+}
+
