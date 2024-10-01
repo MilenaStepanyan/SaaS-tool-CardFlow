@@ -1,13 +1,13 @@
 import React from "react";
 import logo from "../../public/logo.png";
-import form from "../../public/trello.webp"
+import form from "../../public/trello.webp";
 const Home: React.FC = () => {
   return (
     <>
       <div className="main">
         <header>
           <div className="header">
-            <img  className="logo" src={logo} alt="" />
+            <img className="logo" src={logo} alt="" />
             <a href="#" className="button type--B">
               <div className="button__line"></div>
               <div className="button__line"></div>
@@ -19,13 +19,18 @@ const Home: React.FC = () => {
         </header>
         <div className="login-invitation">
           <div className="sign-up-trap">
-          <h1>Organize,Collaborate,Succeed with CardFlow</h1>
-          <h6>Organize it all together,do not fall for trap</h6>
+            <h1>
+              Organize,Collaborate,
+              <br />
+              Succeed with
+              <br />
+              <span>CardFlow</span>{" "}
+            </h1>
+            <p>Organize it all together,do not fall for trap</p>
           </div>
           <div className="design">
-              <img src={form} className="card-schema" alt="" />
+            <img src={form} className="card-schema" alt="" />
           </div>
-        
         </div>
       </div>
     </>
