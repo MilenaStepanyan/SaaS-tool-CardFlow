@@ -16,7 +16,10 @@ export const Login: React.FC = () => {
             ${import.meta.env.VITE_API_URL}/user/login`,
         { username, password }
       );
+      const token = response.data.token;
+      localStorage.setItem("token", token);
       navigate("/");
+      console.log("Logged successfully", response.data);
     } catch (err) {
       console.error(err);
       setError("An unexpected error occurred");
@@ -33,7 +36,7 @@ export const Login: React.FC = () => {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-       
+
         <input
           type="password"
           placeholder="Password"
