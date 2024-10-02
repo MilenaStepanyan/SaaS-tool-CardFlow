@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Home from "./components/Home";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
-const API_URL = "http://localhost:4000/api/status";
+// const API_URL = "http://localhost:4000/api/status";
 import "./App.css";
 const App: React.FC = () => {
   // useEffect(() => {
@@ -28,10 +28,11 @@ const App: React.FC = () => {
     <Router>
     <Routes>
       <Route path="/" element={<Home />} />
+      
     </Routes>
   </Router>
   );
 };
 
-
+export default App;
 
