@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../../public/logo.png";
 import form from "../../public/trello.webp";
 import joiners from "../../public/logos-horizonal.svg"
+import { Link } from "react-router-dom";
 const Home: React.FC = () => {
   return (
     <>
@@ -12,7 +13,7 @@ const Home: React.FC = () => {
             <a href="#" className="button type--B">
               <div className="button__line"></div>
               <div className="button__line"></div>
-              <span className="button__text">LogIn / SignUp</span>
+              <span className="button__text">  <Link to="/login">LogIn / SignUp</Link></span>
               <div className="button__drow1"></div>
               <div className="button__drow2"></div>
             </a>
