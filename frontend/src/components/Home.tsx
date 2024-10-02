@@ -13,7 +13,7 @@ const Home: React.FC = () => {
             <a href="#" className="button type--B">
               <div className="button__line"></div>
               <div className="button__line"></div>
-              <span className="button__text">  <Link to="/login">LogIn / SignUp</Link></span>
+              <span className="button__text">  <Link className="road-to-login-page" to="/login">LogIn / SignUp</Link></span>
               <div className="button__drow1"></div>
               <div className="button__drow2"></div>
             </a>

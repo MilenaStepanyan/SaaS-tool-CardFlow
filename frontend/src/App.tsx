@@ -2,6 +2,7 @@ import React from "react";
 import Home from "./components/Home";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css";
+import { Login } from "./components/Login";
 const App: React.FC = () => {
   // useEffect(() => {
   //   const fetchStatus = async () => {
@@ -25,7 +26,7 @@ const App: React.FC = () => {
     <Router>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Home />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   </Router>
   );
