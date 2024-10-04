@@ -252,7 +252,6 @@ body {
 }
 
 .header {
-  
   background-color: white;
   display: flex;
   justify-content: space-around;
@@ -283,7 +282,7 @@ body {
   font-size: 60px;
 }
 .sign-up-trap span {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-family: "Poppins", sans-serif;
   font-size: 60px;
   animation: colorChange 5s ease-in-out infinite;
@@ -291,24 +290,24 @@ body {
 
 @keyframes colorChange {
   0% {
-    color: #6A5ACD;
+    color: #6a5acd;
   }
   50% {
-    color: #9932CC; 
+    color: #9932cc;
   }
   100% {
-    color: #4682B4; 
+    color: #4682b4;
   }
 }
-.our-joiners{
+.our-joiners {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap:10px;
+  gap: 10px;
   margin: 30px;
 }
-.our-joiners p{
+.our-joiners p {
   font-size: 20px;
   font-family: "Charlie Text", sans-serif;
 }
@@ -376,10 +375,36 @@ body {
   padding: 10px 0;
 }
 
-.road-to-login-page{
+.road-to-login-page {
   text-decoration: none;
   color: #000000;
 }
-.login-illustration{
+.login-illustration {
   background-color: white;
+}
+.create-button {
+  display: flex;
+  align-items: center;
+  background-color: #4c89af;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.create-button .icon {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.create-button:hover {
+  transition: 1s;
+  background-color: #5c65b8;
+}
+.profileHeader{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #b2b2b25c;
 }
