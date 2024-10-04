@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { STATUS_CODES } from "../utils/statusCodes";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-const secret_key = process.env.JWT_SECRET;
+const secret_key = process.env.JWT_SECRET as string;
 if (!secret_key) {
   throw new Error("Secret Key Required");
 }
