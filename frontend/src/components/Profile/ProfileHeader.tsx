@@ -19,7 +19,7 @@ export const ProfileHeader: React.FC = () => {
           },
         }
       );
-      const boardId = response.data.id;
+      const boardId = response.data.boardId;
       navigate(`/board/${boardId}`);
     } catch (err) {
       console.error("err");
