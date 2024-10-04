@@ -6,17 +6,18 @@ import {
   deleteItem,
   getAllItems,
 } from "../controllers/Card-attached-controllers/checklistItemsController";
+import { verifyToken } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post("/checklists/:checklistId/items", addItem);
+router.post("/checklists/:checklistId/items", verifyToken, addItem);
 
-router.get("/checklists/:checklistId/items", getAllItems);
+router.get("/checklists/:checklistId/items", verifyToken, getAllItems);
 
-router.get("/checklist-items/:itemId", getItemById);
+router.get("/checklist-items/:itemId", verifyToken, getItemById);
 
-router.put("/checklist-items/:itemId", updateItem);
+router.put("/checklist-items/:itemId", verifyToken, updateItem);
 
-router.delete("/checklist-items/:itemId", deleteItem);
+router.delete("/checklist-items/:itemId", verifyToken, deleteItem);
 
 export default router;

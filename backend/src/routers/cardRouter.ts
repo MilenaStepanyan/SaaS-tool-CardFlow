@@ -6,17 +6,18 @@ import {
   getCardById,
   updateCard,
 } from "../controllers/cardController";
+import { verifyToken } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post("/lists/:listId/cards", createCard);
+router.post("/lists/:listId/cards", verifyToken, createCard);
 
-router.get("/lists/:listId/cards", getAllCards);
+router.get("/lists/:listId/cards", verifyToken, getAllCards);
 
-router.get("/cards/:cardId", getCardById);
+router.get("/cards/:cardId", verifyToken, getCardById);
 
-router.put("/cards/:cardId", updateCard);
+router.put("/cards/:cardId", verifyToken, updateCard);
 
-router.delete("/cards/:cardId", deleteCard);
+router.delete("/cards/:cardId", verifyToken, deleteCard);
 
 export default router;

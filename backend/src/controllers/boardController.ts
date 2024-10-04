@@ -76,14 +76,14 @@ export const deleteBoardById = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { borderId } = req.params;
-    const [result] = await promisePool.query<RowDataPacket[]>(
+    const { boardId } = req.params;
+    const [result] = await promisePool.query<ResultSetHeader>(
       `
     DELETE FROM boards WHERE id =?
     `,
-      [borderId]
+      [boardId]
     );
-    if (result.length === 0) {
+    if (result.affectedRows === 0) {
       return res
         .status(STATUS_CODES.NOT_FOUND)
         .json({ msg: "Borders not found" });
