@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import illustration from "../../public/login-illustration.png";
+import { Header } from "./Header";
 export const Login: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -12,8 +13,7 @@ export const Login: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `
-            ${import.meta.env.VITE_API_URL}/user/login`,
+        `${import.meta.env.VITE_API_URL}/user/login`,
         { username, password }
       );
       const token = response.data.token;
@@ -27,26 +27,29 @@ export const Login: React.FC = () => {
   };
   return (
     <>
-      <h1>wassup</h1>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+      <Header />
+      <div className="main">
+        <img className="login-illustration" src={illustration} alt="" />
+        <form onSubmit={handleLogin}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p>{error}</p>}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        {error && <p>{error}</p>}
+      </div>
     </>
   );
 };
