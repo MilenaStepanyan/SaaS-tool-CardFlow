@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import illustration from "../../public/login-illustration.png";
+import illustration from "../../../public/login-illustration.png";
 import { Header } from "../Header";
 export const Login: React.FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -18,7 +18,7 @@ export const Login: React.FC = () => {
       );
       const token = response.data.token;
       localStorage.setItem("token", token);
-      navigate("/");
+      navigate("/profile");
       console.log("Logged successfully", response.data);
     } catch (err) {
       console.error(err);
