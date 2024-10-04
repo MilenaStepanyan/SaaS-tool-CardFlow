@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { ProfileHeader } from "./ProfileHeader";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-interface Board {
-  name: string;
-  description: string;
-}
+
 export const BoardPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { boardId } = useParams<{ boardId: string }>();
+  const [title, setTitle] = useState<string>("");
+  const [showDropdown, setShowDropdown] = useState(false);
   const [board, setBoard] = useState<any>(null);
   useEffect(() => {
     const handleGettingBoardInformation = async () => {
@@ -45,7 +44,24 @@ export const BoardPage: React.FC = () => {
   if (!board) {
     return <div>Loading...</div>;
   }
-
+const handleCreatingList = async()=>{
+    try {
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/boards/${boardId}/lists`,
+          { title },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const listId = response.data.listId;
+      } catch (err) {
+        console.error("err");
+        setError("An unexpected error occurred");
+      }
+}
   return (
     <>
       <ProfileHeader />
@@ -53,6 +69,23 @@ export const BoardPage: React.FC = () => {
         <h1>{board.name}</h1>
         <p>{board.description}</p>
       </div>
+      <div className="create-list">
+        <button onClick={() => setShowDropdown((prev) => !prev)}>Create List</button>
+      </div>
+      {showDropdown && (
+        <div className="dropdown">
+          <h3>Create New Board</h3>
+          <input
+            type="text"
+            placeholder="Board Name"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+         
+          <button onClick={handleCreatingList}>Create</button>
+          {error && <p className="error">{error}</p>}
+        </div>
+      )}
     </>
   );
 };
