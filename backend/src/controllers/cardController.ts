@@ -26,7 +26,7 @@ export const createCard = async (
       return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "List not found" });
     }
     const [result] = await promisePool.query<ResultSetHeader>(
-      `INSERT INTO cards (name, description,list_id, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO cards (title, description,list_id, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())`,
       [title, description || null, listId]
     );
     return res.status(STATUS_CODES.OK).json({ cardId: result.insertId });

@@ -10,7 +10,7 @@ export const BoardPage: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [board, setBoard] = useState<any>(null);
-
+  
   useEffect(() => {
     const handleGettingBoardInformation = async () => {
       try {
@@ -39,6 +39,7 @@ export const BoardPage: React.FC = () => {
     };
     handleGettingBoardInformation();
   }, [boardId]);
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -59,18 +60,17 @@ export const BoardPage: React.FC = () => {
           },
         }
       );
+
       const newList = response.data.list;
       setBoard((prevBoard: any) => ({
         ...prevBoard,
-        lists: Array.isArray(prevBoard.lists)
-          ? [...prevBoard.lists, newList]
-          : [newList],
+        lists: Array.isArray(prevBoard.lists) ? [...prevBoard.lists, newList] : [newList],
       }));
 
       setTitle("");
       setShowDropdown(false);
     } catch (err) {
-      console.error("err");
+      console.error("Error creating list:", err);
       setError("An unexpected error occurred");
     }
   };
@@ -89,14 +89,13 @@ export const BoardPage: React.FC = () => {
       </div>
       {showDropdown && (
         <div className="dropdown">
-          <h3>Create New Board</h3>
+          <h3>Create New List</h3>
           <input
             type="text"
-            placeholder="Board Name"
+            placeholder="List Name"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-
           <button onClick={handleCreatingList}>Create</button>
           {error && <p className="error">{error}</p>}
         </div>
