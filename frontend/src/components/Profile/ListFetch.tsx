@@ -1,10 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { CardFetch } from "../CardFetch";
+
+interface Card {
+  id: number;
+  name: string;
+  description?: string; 
+}
 
 interface List {
   id: number;
   name: string;
-  cards?: any[];
+  cards?: Card[]; 
 }
 
 interface ListFetchProps {
@@ -17,7 +24,6 @@ export const ListFetch: React.FC<ListFetchProps> = ({ boardId }) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState(false);
-
   useEffect(() => {
     const handleGettingListInformation = async () => {
       try {
@@ -34,7 +40,7 @@ export const ListFetch: React.FC<ListFetchProps> = ({ boardId }) => {
             },
           }
         );
-        
+
         if (response.data.lists) {
           setLists(response.data.lists);
         } else {
@@ -69,7 +75,7 @@ export const ListFetch: React.FC<ListFetchProps> = ({ boardId }) => {
           },
         }
       );
-      
+
       const newCard = response.data.card; 
       setLists((prevLists) => {
         return prevLists.map((list) => {
@@ -85,7 +91,6 @@ export const ListFetch: React.FC<ListFetchProps> = ({ boardId }) => {
 
       setTitle("");
       setDescription("");
-      setShowDropdown(false);
     } catch (err) {
       console.error("Error creating card:", err);
       setError("An unexpected error occurred");
@@ -97,6 +102,7 @@ export const ListFetch: React.FC<ListFetchProps> = ({ boardId }) => {
       {lists.map((list) => (
         <div key={list.id}>
           <h1>{list.name}</h1>
+          <CardFetch listId={list.id.toString()} />
           <div>
             <button onClick={() => setShowDropdown((prev) => !prev)}>
               Create Card
