@@ -55,9 +55,9 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
   }
 
   return (
-    <div>
+    <div className="card-list">
       {cards.map((card) => (
-        <div key={card.id}>
+        <div className="card-item" key={card.id}>
           <h3>{card.name}</h3>
           {card.description && <p>{card.description}</p>}
         </div>

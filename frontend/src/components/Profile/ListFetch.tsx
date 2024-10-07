@@ -98,37 +98,37 @@ export const ListFetch: React.FC<ListFetchProps> = ({ boardId }) => {
   };
 
   return (
-    <div>
-      {lists.map((list) => (
-        <div key={list.id}>
-          <h1>{list.name}</h1>
-          <CardFetch listId={list.id.toString()} />
-          <div>
-            <button onClick={() => setShowDropdown((prev) => !prev)}>
-              Create Card
-            </button>
-            {showDropdown && (
-              <div className="dropdown">
-                <h3>Create New Card</h3>
-                <input
-                  type="text"
-                  placeholder="Card Title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Card Description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-                <button onClick={() => handleCreatingCard(list.id)}>Create</button>
-                {error && <p className="error">{error}</p>}
-              </div>
-            )}
-          </div>
+    <div className="list-container">
+    {lists.map((list) => (
+      <div className="list-item" key={list.id}>
+        <h1>{list.name}</h1>
+        <CardFetch listId={list.id.toString()} />
+        <div className="create-card-container">
+          <button className="create-card-button" onClick={() => setShowDropdown((prev) => !prev)}>
+            Create Card
+          </button>
+          {showDropdown && (
+            <div className="dropdown">
+              <h3>Create New Card</h3>
+              <input
+                type="text"
+                placeholder="Card Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Card Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              <button onClick={() => handleCreatingCard(list.id)}>Create</button>
+              {error && <p className="error">{error}</p>}
+            </div>
+          )}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
+  </div>
   );
 };

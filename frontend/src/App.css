@@ -408,3 +408,89 @@ body {
   align-items: center;
   background-color: #b2b2b25c;
 }
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.card-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #f7f7f7;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.list-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  background-color: #e9f5ff;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.dropdown {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-top: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.create-list {
+  margin: 20px;
+}
+
+.after-header {
+  margin: 20px;
+}

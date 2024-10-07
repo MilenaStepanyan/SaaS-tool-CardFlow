@@ -59,7 +59,7 @@ export const loginUser = async (
         .json({ msg: "Wrong password" });
     }
     const token = jwt.sign({ userId: user.id }, SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: "10h",
     });
     console.log(user);
 
