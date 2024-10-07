@@ -56,12 +56,20 @@ const handleCreatingList = async()=>{
             },
           }
         );
-        const listId = response.data.listId;
+        const newList = response.data.list;
+        setBoard((prevBoard: any) => ({
+            ...prevBoard,
+            lists: Array.isArray(prevBoard.lists) ? [...prevBoard.lists, newList] : [newList],
+          }));
+    
+          setTitle("");
+          setShowDropdown(false);
       } catch (err) {
         console.error("err");
         setError("An unexpected error occurred");
       }
 }
+
   return (
     <>
       <ProfileHeader />
