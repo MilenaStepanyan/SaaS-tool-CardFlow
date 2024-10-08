@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 export const ProfileHeader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const navigate = useNavigate();
+
   const handleCreatingBoard = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -19,13 +21,18 @@ export const ProfileHeader: React.FC = () => {
           },
         }
       );
-      const boardId = response.data.boardId;
-      navigate(`/board/${boardId}`);
+
+      if (response.data.boardId) {
+        navigate(`/board/${response.data.boardId}`);
+      } else {
+        setError("Failed to create board. No board ID returned.");
+      }
     } catch (err) {
-      console.error("err");
+      console.error("Error creating board", err);
       setError("An unexpected error occurred");
     }
   };
+
   return (
     <>
       <header className="profileHeader">

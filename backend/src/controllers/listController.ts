@@ -4,11 +4,8 @@ import { Request, Response } from "express";
 import { ResultSetHeader } from "mysql2";
 import { RowDataPacket } from "mysql2";
 import { OkPacket } from "mysql2";
+export const createList = async (req: Request, res: Response): Promise<Response> => {
 
-export const createList = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
   try {
     const { title } = req.body;
     const { boardId } = req.params;
@@ -23,7 +20,7 @@ export const createList = async (
     );
     return res.status(STATUS_CODES.CREATED).json({ listId: result.insertId });
   } catch (error) {
-    console.log(error);
+    console.log("Error in createList:", error); 
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
