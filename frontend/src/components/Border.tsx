@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import CardComponent from "./CardComponent";
 
 
 const BoardPage: React.FC = () => {
@@ -77,7 +78,9 @@ const BoardPage: React.FC = () => {
       <ul className="lists-container">
         {lists.length > 0 ? (
           lists.map((list) => (
-            <li key={list.id} className="list-item">{list.name}</li>
+            <li key={list.id} className="list-item">{list.name}
+             <CardComponent listId={list.id} /></li>
+            
           ))
         ) : (
           <li className="no-lists">No lists available.</li>
