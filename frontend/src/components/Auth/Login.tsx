@@ -7,7 +7,6 @@ import google from "../../../public/google.png";
 import microsoft from "../../../public/microsoft.png";
 import apple from "../../../public/apple.png";
 import logo from "../../../public/logo.png";
-import { Header } from "../Header";
 import { Link } from "react-router-dom";
 
 export const Login: React.FC = () => {
@@ -24,6 +23,7 @@ export const Login: React.FC = () => {
         { username, password }
       );
       const token = response.data.token;
+      localStorage.setItem("username", response.data.user.username);
       localStorage.setItem("token", token);
       navigate("/profile");
       console.log("Logged successfully", response.data);

@@ -8,11 +8,22 @@ export const ProfileHeader: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [boards, setBoards] = useState<any[]>([]);
+  const [username, setUsername] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    fetchUsername();
     fetchBoards();
   }, []);
+
+  const fetchUsername = () => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }console.log(username);
+    
+  };
 
   const handleCreatingBoard = async () => {
     try {
@@ -42,12 +53,15 @@ export const ProfileHeader: React.FC = () => {
   const fetchBoards = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/board/getBoard`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setBoards(response.data); // Assuming response.data is the array of boards
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/board/getBoard`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setBoards(response.data);
     } catch (error) {
       console.error("Error fetching boards:", error);
       setError("Failed to fetch boards. Please try again later.");
@@ -57,13 +71,20 @@ export const ProfileHeader: React.FC = () => {
   return (
     <>
       <header className="profileHeader">
-        <h1>CardFlow</h1>
+        <div className="profile-picture">
+          {username && (
+            <div className="avatar">
+              {username.charAt(0).toUpperCase()}
+            </div>
+          )}
+        </div>
+        <h1>{username}'s Profile</h1>
         <button
           className="create-button"
           onClick={() => setShowDropdown((prev) => !prev)}
         >
           <span className="icon">+</span>
-          <span className="label">Create</span>
+          <span className="label">Create Board</span>
         </button>
       </header>
 
@@ -86,17 +107,19 @@ export const ProfileHeader: React.FC = () => {
           {error && <p className="error">{error}</p>}
         </div>
       )}
-      <h2>Boards</h2>
-      <ul>
+
+      <h2>Your Boards</h2>
+      <ul className="board-list">
         {boards.length > 0 ? (
           boards.map((board) => (
-            <li key={board.id} className="list-item">
+            <li key={board.id} className="board-item">
               <h3>{board.name}</h3>
               <p>{board.description}</p>
+              <button onClick={() => navigate(`/board/${board.id}`)}>View Board</button>
             </li>
           ))
         ) : (
-          <li className="no-lists">No Boards available.</li>
+          <li className="no-boards">No Boards available.</li>
         )}
       </ul>
     </>
