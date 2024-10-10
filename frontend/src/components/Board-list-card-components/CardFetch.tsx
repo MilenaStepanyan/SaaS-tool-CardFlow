@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Checklist from "./CheckList";
 import ChecklistItems from "./ChecklistItems";
-import Comments from "./Comments";
+import Comments from "../Comments";
 
 interface Card {
   id: number;

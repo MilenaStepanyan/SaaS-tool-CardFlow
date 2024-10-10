@@ -4,7 +4,7 @@ import "./App.css";
 import Home from "./components/Home";
 import { Login } from "./components/Auth/Login";
 import { Register } from "./components/Auth/Register";
-import Boards from "./components/Border";
+import Boards from "./components/Board-list-card-components/Board";
 import { ProfileHeader } from "./components/Profile/ProfileHeader";
 // import ProfilePage from "./components/Profile/ProfilePage";
 
