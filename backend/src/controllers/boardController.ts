@@ -35,12 +35,15 @@ export const getBoard = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const [boards] = await promisePool.query(
-      `SELECT * FROM boards WHERE user_id=?`,
+    const userId:any =req.user
+    const [boards] = await promisePool.query<RowDataPacket[]>(
+      `SELECT * FROM boards WHERE created_by = ?`,
       [req.user]
     );
+
     return res.status(STATUS_CODES.OK).json(boards);
   } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ message: "Error fetching boards" });

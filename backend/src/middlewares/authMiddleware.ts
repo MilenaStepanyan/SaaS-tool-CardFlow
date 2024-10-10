@@ -26,6 +26,7 @@ export const verifyToken = async (
   const authHeader = req.header("Authorization");
   const token = authHeader?.replace("Bearer ", "").trim();
 
+
   if (!token) {
     return res
       .status(STATUS_CODES.UNAUTHORIZED)

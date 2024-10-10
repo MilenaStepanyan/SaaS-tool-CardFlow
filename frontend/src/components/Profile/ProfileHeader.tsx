@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,12 @@ export const ProfileHeader: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [boards, setBoards] = useState<any[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchBoards();
+  }, []);
 
   const handleCreatingBoard = async () => {
     try {
@@ -27,9 +32,25 @@ export const ProfileHeader: React.FC = () => {
       } else {
         setError("Failed to create board. No board ID returned.");
       }
+      fetchBoards();
     } catch (err) {
       console.error("Error creating board", err);
       setError("An unexpected error occurred");
+    }
+  };
+
+  const fetchBoards = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/board/getBoard`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setBoards(response.data); // Assuming response.data is the array of boards
+    } catch (error) {
+      console.error("Error fetching boards:", error);
+      setError("Failed to fetch boards. Please try again later.");
     }
   };
 
@@ -65,6 +86,19 @@ export const ProfileHeader: React.FC = () => {
           {error && <p className="error">{error}</p>}
         </div>
       )}
+      <h2>Boards</h2>
+      <ul>
+        {boards.length > 0 ? (
+          boards.map((board) => (
+            <li key={board.id} className="list-item">
+              <h3>{board.name}</h3>
+              <p>{board.description}</p>
+            </li>
+          ))
+        ) : (
+          <li className="no-lists">No Boards available.</li>
+        )}
+      </ul>
     </>
   );
 };

@@ -10,7 +10,7 @@ import { verifyToken } from "../middlewares/authMiddleware";
 const router = Router();
 
 router.post("/create", verifyToken, createBoard);
-router.get("/get", verifyToken, getBoard);
+router.get("/getBoard", verifyToken, getBoard);
 router.get("/:boardId", getBoardById);
 router.delete("/:boardId", deleteBoardById);
 export default router;
