@@ -12,7 +12,6 @@ export const ProfileHeader: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-
     fetchUsername();
     fetchBoards();
   }, []);
@@ -21,8 +20,7 @@ export const ProfileHeader: React.FC = () => {
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setUsername(storedUsername);
-    }console.log(username);
-    
+    }
   };
 
   const handleCreatingBoard = async () => {
@@ -78,7 +76,7 @@ export const ProfileHeader: React.FC = () => {
             </div>
           )}
         </div>
-        <h1>{username}'s Profile</h1>
+        <h1 className="profile-title">{username}'s Profile</h1>
         <button
           className="create-button"
           onClick={() => setShowDropdown((prev) => !prev)}
@@ -96,19 +94,21 @@ export const ProfileHeader: React.FC = () => {
             placeholder="Board Name"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            className="input-field"
           />
           <input
             type="text"
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            className="input-field"
           />
-          <button onClick={handleCreatingBoard}>Create</button>
+          <button onClick={handleCreatingBoard} className="create-board-btn">Create</button>
           {error && <p className="error">{error}</p>}
         </div>
       )}
 
-      <h2>Your Boards</h2>
+      <h2 className="lists-header">Your Boards</h2>
       <ul className="board-list">
         {boards.length > 0 ? (
           boards.map((board) => (
