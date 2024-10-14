@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 export const ProfileHeader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -72,9 +71,7 @@ export const ProfileHeader: React.FC = () => {
       <header className="profileHeader">
         <div className="profile-picture">
           {username && (
-            <div className="avatar">
-              {username.charAt(0).toUpperCase()}
-            </div>
+            <div className="avatar">{username.charAt(0).toUpperCase()}</div>
           )}
         </div>
         <h1 className="profile-title">{username}'s Profile</h1>
@@ -104,27 +101,30 @@ export const ProfileHeader: React.FC = () => {
             onChange={(e) => setDescription(e.target.value)}
             className="input-field"
           />
-          <button onClick={handleCreatingBoard} className="create-board-btn">Create</button>
+          <button onClick={handleCreatingBoard} className="create-board-btn">
+            Create
+          </button>
           {error && <p className="error">{error}</p>}
         </div>
       )}
-<div className="whole-boards">
-   <h2 className="lists-header">Your Boards</h2>
-      <ul className="board-list">
-        {boards.length > 0 ? (
-          boards.map((board) => (
-            <li key={board.id} className="board-item">
-              <h3>{board.name}</h3>
-              <p>{board.description}</p>
-              <button onClick={() => navigate(`/board/${board.id}`)}>View Board</button>
-            </li>
-          ))
-        ) : (
-          <li className="no-boards">No Boards available.</li>
-        )}
-      </ul>
-</div>
-     
+      <div className="whole-boards">
+        <h2 className="lists-header">Your Boards</h2>
+        <ul className="board-list">
+          {boards.length > 0 ? (
+            boards.map((board) => (
+              <li key={board.id} className="board-item">
+                <h3>{board.name}</h3>
+                <p>{board.description}</p>
+                <button onClick={() => navigate(`/board/${board.id}`)}>
+                  View Board
+                </button>
+              </li>
+            ))
+          ) : (
+            <li className="no-boards">No Boards available.</li>
+          )}
+        </ul>
+      </div>
     </>
   );
 };
