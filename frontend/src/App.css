@@ -874,11 +874,20 @@ button:hover {
 }
 
 .board-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap:50px;
   list-style-type: none;
   padding: 0;
 }
 
 .board-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 400px;
   padding: 15px;
   margin: 10px 0;
@@ -895,4 +904,10 @@ button:hover {
 .error {
   color: red;
   margin-top: 10px;
+}
+.whole-boards{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

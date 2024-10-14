@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 export const ProfileHeader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -107,8 +108,8 @@ export const ProfileHeader: React.FC = () => {
           {error && <p className="error">{error}</p>}
         </div>
       )}
-
-      <h2 className="lists-header">Your Boards</h2>
+<div className="whole-boards">
+   <h2 className="lists-header">Your Boards</h2>
       <ul className="board-list">
         {boards.length > 0 ? (
           boards.map((board) => (
@@ -122,6 +123,8 @@ export const ProfileHeader: React.FC = () => {
           <li className="no-boards">No Boards available.</li>
         )}
       </ul>
+</div>
+     
     </>
   );
 };

@@ -27,13 +27,14 @@ const ChecklistItems: React.FC<ChecklistItemsProps> = ({ checklistId }) => {
         );
         setItems(response.data.items);
       } catch (err) {
-        setError("An error occurred while fetching items.");
+        setError("An error occurred while fetching checklist items.");
       }
     };
+
     fetchItems();
   }, [checklistId]);
 
-  const addItem = async () => {
+  const createItem = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -44,9 +45,9 @@ const ChecklistItems: React.FC<ChecklistItemsProps> = ({ checklistId }) => {
         }
       );
       setItems((prev) => [...prev, { id: response.data.itemId, description }]);
-      setDescription("");
+      setDescription(""); 
     } catch (err) {
-      setError("An error occurred while adding an item.");
+      setError("An error occurred while creating a checklist item.");
     }
   };
 
@@ -55,16 +56,18 @@ const ChecklistItems: React.FC<ChecklistItemsProps> = ({ checklistId }) => {
   return (
     <div>
       <h3>Checklist Items</h3>
-      {items.map((item) => (
-        <div key={item.id}>{item.description}</div>
-      ))}
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>{item.description}</li>
+        ))}
+      </ul>
       <input
         type="text"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Item description"
       />
-      <button onClick={addItem}>Add Item</button>
+      <button onClick={createItem}>Add Item</button>
     </div>
   );
 };
