@@ -9,6 +9,7 @@ export const ProfileHeader: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [boards, setBoards] = useState<any[]>([]);
   const [username, setUsername] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("")
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,6 +58,9 @@ export const ProfileHeader: React.FC = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            search: searchTerm,
+          },
         }
       );
       setBoards(response.data);
@@ -68,7 +72,8 @@ export const ProfileHeader: React.FC = () => {
 
   return (
     <>
-      <header className="profileHeader">
+
+       <header className="profileHeader">
         <div className="profile-picture">
           {username && (
             <div className="avatar">{username.charAt(0).toUpperCase()}</div>
@@ -82,6 +87,17 @@ export const ProfileHeader: React.FC = () => {
           <span className="icon">+</span>
           <span className="label">Create Board</span>
         </button>
+        <input
+  type="text"
+  placeholder="Search Boards"
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  className="input-field"
+/>
+<button onClick={fetchBoards} className="search-board-btn">
+  Search
+</button>
+
       </header>
 
       {showDropdown && (
@@ -107,6 +123,7 @@ export const ProfileHeader: React.FC = () => {
           {error && <p className="error">{error}</p>}
         </div>
       )}
+      
       <div className="whole-boards">
         <h2 className="lists-header">Your Boards</h2>
         <ul className="board-list">
@@ -124,7 +141,7 @@ export const ProfileHeader: React.FC = () => {
             <li className="no-boards">No Boards available.</li>
           )}
         </ul>
-      </div>
+      </div> 
     </>
   );
 };

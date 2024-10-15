@@ -387,7 +387,7 @@ body {
 .create-button {
   display: flex;
   align-items: center;
-  background-color: #4c89af;
+  background-color: #5c65b8;
   color: white;
   border: none;
   border-radius: 5px;
@@ -404,13 +404,7 @@ body {
   transition: 1s;
   background-color: #5c65b8;
 }
-.profileHeader {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 20px;
-  background-color: #b2b2b22d;
-}
+
 .error-message {
   color: red;
   font-weight: bold;
@@ -836,7 +830,7 @@ button:hover {
   justify-content: space-between;
   padding: 20px;
   background-color: #f7f9fc;
-  border-bottom: 2px solid #e0e0e0;
+  border-radius:0px 0px 15px 15px;
 }
 
 .profile-picture {
@@ -848,7 +842,7 @@ button:hover {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #007bff;
+  background-color: #5c65b8;
   color: white;
   display: flex;
   align-items: center;
@@ -857,14 +851,7 @@ button:hover {
   margin-right: 15px;
 }
 
-.create-button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+
 
 .dropdown {
   margin: 20px 0;
@@ -910,4 +897,7 @@ button:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.profileHeader{
+  background-color: #8d9afc29;
 }

@@ -29,17 +29,23 @@ export const createBoard = async (
       .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
       .json({ msg: "Server error" });
   }
-};
-export const getBoard = async (
+};export const getBoard = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const userId:any =req.user
-    const [boards] = await promisePool.query<RowDataPacket[]>(
-      `SELECT * FROM boards WHERE created_by = ?`,
-      [req.user]
-    );
+    const { search } = req.query;
+    const userId = req.user;
+
+    let sql = `SELECT * FROM boards WHERE created_by = ?`;
+    let params: any[] = [userId];
+
+    if (search) {
+      sql += ` AND (name LIKE ? OR description LIKE ?)`;
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    const [boards] = await promisePool.query<RowDataPacket[]>(sql, params);
 
     return res.status(STATUS_CODES.OK).json(boards);
   } catch (error) {
@@ -49,6 +55,7 @@ export const getBoard = async (
       .json({ message: "Error fetching boards" });
   }
 };
+
 export const getBoardById = async (
   req: Request,
   res: Response
