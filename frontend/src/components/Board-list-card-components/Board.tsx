@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import CardComponent from "./CardComponent";
+import { CardFetch } from "./CardFetch";
 
 const BoardPage: React.FC = () => {
   const { boardId } = useParams<{ boardId: string }>();
@@ -75,6 +77,7 @@ const BoardPage: React.FC = () => {
           lists.map((list) => (
             <li key={list.id} className="list-item">
               {list.name}
+              <CardFetch listId={list.id} />
             </li>
           ))
         ) : (

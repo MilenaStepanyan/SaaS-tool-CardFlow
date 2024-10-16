@@ -995,17 +995,16 @@ button:hover {
 }
 
 .board-item button {
-  margin-top: 15px;
-  padding: 12px;
-  background: none;
+
+  padding: 20px;
+ background: none;
   color: #6e57e0a3;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
 
 .board-item button:hover {
-  background: none;
+  background-color: rgba(204, 204, 204, 0.314);
+  border-radius: 50%;
 }
 .board-item:hover {
   transform: scale(1.05);
@@ -1091,6 +1090,7 @@ button:hover {
     "Lucida Sans", Arial, sans-serif;
 }
 .bttns {
+  content: none;
   display: flex;
   flex-direction: column;
   align-items: center;

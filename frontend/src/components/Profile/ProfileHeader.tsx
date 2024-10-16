@@ -150,9 +150,6 @@ export const ProfileHeader: React.FC = () => {
                       <button onClick={() => deleteBoards(board.id)}>
                         <FontAwesomeIcon icon={faTrashCan} />
                       </button>
-                      <button onClick={() => navigate(`/board/${board.id}`)}>
-                        <FontAwesomeIcon icon={faPenToSquare} />
-                      </button>
                     </div>
                   </li>
                 ))}
