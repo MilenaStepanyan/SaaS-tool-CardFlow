@@ -494,9 +494,7 @@ button:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.board-title {
-  color: #2d3748;
-}
+
 
 .lists-header {
   color: #4a5568;
@@ -729,7 +727,7 @@ button:hover {
 }
 .link-to-each-page {
   text-decoration: none;
-} 
+}
 
 .container-list {
   max-width: 800px;
@@ -741,11 +739,7 @@ button:hover {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.board-title {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
+
 
 .error {
   color: red;
@@ -827,22 +821,17 @@ button:hover {
 .profileHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 20px;
   background-color: #f7f9fc;
-  border-radius:0px 0px 15px 15px;
-}
-
-.profile-picture {
-  display: flex;
-  align-items: center;
+  border-radius: 0px 0px 15px 15px;
 }
 
 .avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #5c65b8;
+  background-color: #b499ff;
   color: white;
   display: flex;
   align-items: center;
@@ -851,8 +840,6 @@ button:hover {
   margin-right: 15px;
 }
 
-
-
 .dropdown {
   margin: 20px 0;
   padding: 15px;
@@ -860,28 +847,6 @@ button:hover {
   border: 1px solid #e0e0e0;
 }
 
-.board-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap:50px;
-  list-style-type: none;
-  padding: 0;
-}
-
-.board-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 400px;
-  padding: 15px;
-  margin: 10px 0;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  background-color: #fff;
-}
 
 .no-boards {
   color: #999;
@@ -892,12 +857,96 @@ button:hover {
   color: red;
   margin-top: 10px;
 }
-.whole-boards{
+
+
+.search-container {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  background-color: #f4f0ff;
+  border-radius: 20px;
+  padding: 5px 10px;
+  width: 300px;
+}
+
+.input-search {
+  border: none;
+  outline: none;
+  background: none;
+  flex-grow: 1;
+  padding: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #6e57e0;
+  padding: 5px;
+}
+.search-btn:hover {
+  background: none;
+}
+.pre-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 10vh;
+}
+.profile-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-details h2 {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  cursor: pointer;
+}
+.hello-icon {
+  width: 350px;
+  height: 300px;
+}
+.welcome-container {
+  padding: 10px;
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50vw;
+  border-radius: 50px;
+  background-color: #a090f51e;
+}
+.main-welcome {
+  display: flex;
   align-items: center;
   justify-content: center;
 }
-.profileHeader{
-  background-color: #8d9afc29;
+.welcome-container h1 {
+  font-size: 26px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+.welcome-container h4 {
+  font-size: 18px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+.view-all-btn {
+  background-color: #6e57e0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.view-all-btn:hover {
+  background-color: #5a47c4;
+}
+.username-span{
+  color: #3c22a5;
 }
