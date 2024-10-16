@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import officeWorker from "../../../public/arabic-letters-resources.webp";
-
+import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 export const ProfileHeader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -121,6 +121,10 @@ export const ProfileHeader: React.FC = () => {
                 .slice(0, showAllBoards ? boards.length : 5)
                 .map((board) => (
                   <li key={board.id} className="board-item">
+                    <div className="board-icon">
+                      <FontAwesomeIcon icon={faClipboard} />{" "}
+
+                    </div>
                     <h3>{board.name}</h3>
                     <p>{board.description}</p>
                     <button onClick={() => navigate(`/board/${board.id}`)}>

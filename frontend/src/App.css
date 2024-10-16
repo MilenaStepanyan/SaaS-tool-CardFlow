@@ -950,3 +950,68 @@ button:hover {
 .username-span{
   color: #3c22a5;
 }
+
+.whole-boards{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+
+}
+.board-list{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap:60px
+}
+.board-item{
+  background-color:#a090f51e;
+  padding: 20px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.board-item {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.board-item h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.board-item p {
+  font-size: 14px;
+  color: #666;
+}
+
+.board-item button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #6e57e0;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.board-item button:hover {
+  background-color: #5a47c4;
+}
+.board-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15);
+}
