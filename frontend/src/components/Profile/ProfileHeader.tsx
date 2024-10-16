@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faListCheck,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 import officeWorker from "../../../public/arabic-letters-resources.webp";
-import { faClipboard } from "@fortawesome/free-solid-svg-icons";
+import cardIcon from "../../../public/credit-card-regular.svg";
 export const ProfileHeader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -42,6 +45,11 @@ export const ProfileHeader: React.FC = () => {
       );
 
       if (response.data.boardId) {
+        setTitle("");
+        setDescription("");
+        setError(null);
+        fetchBoards(); 
+        setShowDropdown(false); 
         navigate(`/board/${response.data.boardId}`);
       } else {
         setError("Failed to create board. No board ID returned.");
@@ -118,12 +126,11 @@ export const ProfileHeader: React.FC = () => {
           {boards.length > 0 ? (
             <>
               {boards
-                .slice(0, showAllBoards ? boards.length : 5)
+                .slice(0, showAllBoards ? boards.length : 4)
                 .map((board) => (
                   <li key={board.id} className="board-item">
-                    <div className="board-icon">
-                      <FontAwesomeIcon icon={faClipboard} />{" "}
-
+                    <div className="card-icon">
+                      <FontAwesomeIcon icon={faListCheck} />
                     </div>
                     <h3>{board.name}</h3>
                     <p>{board.description}</p>
@@ -132,21 +139,53 @@ export const ProfileHeader: React.FC = () => {
                     </button>
                   </li>
                 ))}
-
-              {boards.length > 5 && (
-                <button
-                  onClick={() => setShowAllBoards((prev) => !prev)}
-                  className="view-all-btn"
-                >
-                  {showAllBoards ? "Show Less" : "View All"}
-                </button>
-              )}
             </>
           ) : (
             <li className="no-boards">No Boards available.</li>
           )}
+
+          <li
+            className="dotted-create-board"
+            onClick={() => setShowDropdown((prev) => !prev)}
+          >
+            <span className="icon">+</span>
+          </li>
         </ul>
+
+        {showDropdown && (
+          <div className="dropdown">
+            <h3>Create New Board</h3>
+            <input
+              type="text"
+              placeholder="Board Name"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="input-field"
+            />
+            <input
+              type="text"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="input-field"
+            />
+            <button onClick={handleCreatingBoard} className="create-board-btn">
+              Create
+            </button>
+            {error && <p className="error">{error}</p>}
+          </div>
+        )}
+
+        {boards.length > 5 && (
+          <button
+            onClick={() => setShowAllBoards((prev) => !prev)}
+            className="view-all-btn"
+          >
+            {showAllBoards ? "Show Less" : "View All"}
+          </button>
+        )}
       </div>
+
     </>
   );
 };
