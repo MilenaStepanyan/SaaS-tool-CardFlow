@@ -994,16 +994,16 @@ button:hover {
 
 .board-item button {
   margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #6e57e0a3;
-  color: #fff;
+
+  background:none;
+  color: #6e57e0a3;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .board-item button:hover {
-  background-color: #5a47c4;
+  background:none;
 }
 .board-item:hover {
   transform: scale(1.05);
@@ -1034,4 +1034,68 @@ button:hover {
 .dotted-create-board .icon {
   font-size: 24px;
   color: #666;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000; 
+
+}
+
+.modal-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap:30px;
+  background: white; 
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 60px;
+}
+
+.close-modal-btn {
+  margin-top: 10px;
+  color: black;
+  border: none;
+  background: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.close-modal-btn:hover{
+  background: none;
+}
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 50px;
+  border: .5px black solid;
+}
+.create-board-btn{
+  border-radius: 30px;
+  background-color: #6e57e0a3;
+}
+.modal-content h3 {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+  "Lucida Sans", Arial, sans-serif;
+}
+.bttns{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.buttons-for-ved{
+  display: flex;
+  gap:2px;
 }

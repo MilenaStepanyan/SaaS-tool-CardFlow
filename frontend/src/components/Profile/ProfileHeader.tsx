@@ -3,20 +3,23 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faEye,
   faListCheck,
   faMagnifyingGlass,
+  faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import officeWorker from "../../../public/arabic-letters-resources.webp";
-import cardIcon from "../../../public/credit-card-regular.svg";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons/faPenToSquare";
+
 export const ProfileHeader: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
-  const [showDropdown, setShowDropdown] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [boards, setBoards] = useState<any[]>([]);
   const [username, setUsername] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showAllBoards, setShowAllBoards] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,13 +51,12 @@ export const ProfileHeader: React.FC = () => {
         setTitle("");
         setDescription("");
         setError(null);
-        fetchBoards(); 
-        setShowDropdown(false); 
+        fetchBoards();
+        setShowModal(false);
         navigate(`/board/${response.data.boardId}`);
       } else {
         setError("Failed to create board. No board ID returned.");
       }
-      fetchBoards();
     } catch (err) {
       console.error("Error creating board", err);
       setError("An unexpected error occurred");
@@ -102,9 +104,7 @@ export const ProfileHeader: React.FC = () => {
             className="input-search"
           />
           <button onClick={fetchBoards} className="search-btn">
-            <button onClick={fetchBoards} className="search-btn">
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
           </button>
         </div>
       </header>
@@ -116,8 +116,7 @@ export const ProfileHeader: React.FC = () => {
             </h1>
             <h4>Let’s tackle today’s goals on CardFlow!</h4>
           </div>
-
-          <img className="hello-icon" src={officeWorker} alt="" />
+          <img className="hello-icon" src={officeWorker} alt="Office Worker" />
         </div>
       </div>
       <div className="whole-boards">
@@ -134,26 +133,44 @@ export const ProfileHeader: React.FC = () => {
                     </div>
                     <h3>{board.name}</h3>
                     <p>{board.description}</p>
-                    <button onClick={() => navigate(`/board/${board.id}`)}>
-                      View Board
-                    </button>
+                    <div className="buttons-for-ved">
+                      <button onClick={() => navigate(`/board/${board.id}`)}>
+                        <FontAwesomeIcon icon={faEye} />
+                      </button>
+                      <button onClick={() => navigate(`/board/${board.id}`)}>
+                        <FontAwesomeIcon icon={faTrashCan} />
+                      </button>
+                      <button onClick={() => navigate(`/board/${board.id}`)}>
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                      </button>
+                    </div>
                   </li>
                 ))}
             </>
           ) : (
             <li className="no-boards">No Boards available.</li>
           )}
-
           <li
             className="dotted-create-board"
-            onClick={() => setShowDropdown((prev) => !prev)}
+            onClick={() => setShowModal(true)}
           >
             <span className="icon">+</span>
           </li>
         </ul>
 
-        {showDropdown && (
-          <div className="dropdown">
+        {boards.length > 4 && (
+          <button
+            onClick={() => setShowAllBoards((prev) => !prev)}
+            className="view-all-btn"
+          >
+            {showAllBoards ? "Show Less" : "View All"}
+          </button>
+        )}
+      </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
             <h3>Create New Board</h3>
             <input
               type="text"
@@ -169,97 +186,25 @@ export const ProfileHeader: React.FC = () => {
               onChange={(e) => setDescription(e.target.value)}
               className="input-field"
             />
-            <button onClick={handleCreatingBoard} className="create-board-btn">
-              Create
-            </button>
+            <div className="bttns">
+              <button
+                onClick={handleCreatingBoard}
+                className="create-board-btn"
+              >
+                Create
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="close-modal-btn"
+              >
+                Close
+              </button>
+            </div>
+
             {error && <p className="error">{error}</p>}
           </div>
-        )}
-
-        {boards.length > 5 && (
-          <button
-            onClick={() => setShowAllBoards((prev) => !prev)}
-            className="view-all-btn"
-          >
-            {showAllBoards ? "Show Less" : "View All"}
-          </button>
-        )}
-      </div>
-
+        </div>
+      )}
     </>
   );
 };
-
-/* <header className="profileHeader">
-        <div className="profile-picture">
-          {username && (
-            <div className="avatar">{username.charAt(0).toUpperCase()}</div>
-          )}
-        </div>
-        <h1 className="profile-title">{username}'s Profile</h1>
-        <div className="create-search">
-          <input
-            type="text"
-            placeholder="Search Boards"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="input-field"
-          />
-          <button onClick={fetchBoards} className="search-board-btn">
-            Search
-          </button>
-          <div className="input-container">
-            <button
-              className="create-button"
-              onClick={() => setShowDropdown((prev) => !prev)}
-            >
-              <span className="icon">+</span>
-              <span className="label">Create Board</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {showDropdown && (
-        <div className="dropdown">
-          <h3>Create New Board</h3>
-          <input
-            type="text"
-            placeholder="Board Name"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="input-field"
-          />
-          <input
-            type="text"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="input-field"
-          />
-
-          <button onClick={handleCreatingBoard} className="create-board-btn">
-            Create
-          </button>
-          {error && <p className="error">{error}</p>}
-        </div>
-      )}
-
-      <div className="whole-boards">
-        <h2 className="lists-header">Your Boards</h2>
-        <ul className="board-list">
-          {boards.length > 0 ? (
-            boards.map((board) => (
-              <li key={board.id} className="board-item">
-                <h3>{board.name}</h3>
-                <p>{board.description}</p>
-                <button onClick={() => navigate(`/board/${board.id}`)}>
-                  View Board
-                </button>
-              </li>
-            ))
-          ) : (
-            <li className="no-boards">No Boards available.</li>
-          )}
-        </ul>
-      </div> */
