@@ -83,7 +83,17 @@ export const ProfileHeader: React.FC = () => {
       setError("Failed to fetch boards. Please try again later.");
     }
   };
-
+  const deleteBoards = async (boardId: string) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/board/${boardId}`
+      );
+      setBoards((prevBoards) => prevBoards.filter((board) => board.id !== boardId));
+    } catch (error) {
+      console.error("Error fetching boards:", error);
+      setError("Failed to fetch boards. Please try again later.");
+    }
+  };
   return (
     <>
       <header className="pre-header">
@@ -137,7 +147,7 @@ export const ProfileHeader: React.FC = () => {
                       <button onClick={() => navigate(`/board/${board.id}`)}>
                         <FontAwesomeIcon icon={faEye} />
                       </button>
-                      <button onClick={() => navigate(`/board/${board.id}`)}>
+                      <button onClick={() => deleteBoards(board.id)}>
                         <FontAwesomeIcon icon={faTrashCan} />
                       </button>
                       <button onClick={() => navigate(`/board/${board.id}`)}>
