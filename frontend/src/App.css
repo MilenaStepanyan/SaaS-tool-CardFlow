@@ -1155,10 +1155,21 @@ button:hover {
 }
 .boards-li {
   font-size: 18px;
+  font-family: sans-serif;
   list-style: none;
   color: black;
   padding: 0;
 }
 .boards-listed ul {
   padding: 0;
+  gap:10px;
+  display: flex;
+  flex-direction: column;
+}
+.view-more-button{
+  background:none;
+  color: #000000;
+}
+.view-more-button:hover{
+  background:none;
 }

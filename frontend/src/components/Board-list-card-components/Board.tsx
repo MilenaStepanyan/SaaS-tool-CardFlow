@@ -14,6 +14,7 @@ const BoardPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [username, setUsername] = useState<string>("");
+  const [showAllBoards, setShowAllBoards] = useState<boolean>(false);
 
   const fetchUsername = () => {
     const storedUsername = localStorage.getItem("username");
@@ -82,44 +83,56 @@ const BoardPage: React.FC = () => {
   };
   useEffect(() => {
     fetchBoards();
-    fetchUsername()
+    fetchUsername();
     if (boardId) {
       fetchLists();
     }
   }, [boardId]);
-
+  const displayedBoards = showAllBoards ? boards : boards.slice(0, 10);
   return (
     <>
       <div className="main-lists">
         <div className="left-bar">
           <div className="profile-picture-list">
-          {username && (
-            <div className="profile-details-list">
-              <div className="avatar">{username.charAt(0).toUpperCase()}</div>
-              <h2>{username}</h2>
-            </div>
-          )}
-        </div>
+            {username && (
+              <div className="profile-details-list">
+                <div className="avatar">{username.charAt(0).toUpperCase()}</div>
+                <h2>{username}</h2>
+              </div>
+            )}
+          </div>
           <div className="options">
             <div className="boards-option">
               <FontAwesomeIcon icon={faListOl} />
-              <Link className="to-boards" to={"/profile"}> Boards</Link>
+              <Link className="to-boards" to={"/profile"}>
+                {" "}
+                Boards
+              </Link>
             </div>
             <div className="boards-listed">
               <p>Your Boards</p>
               <ul>
-                {boards.map((board) => (
+                {displayedBoards.map((board) => (
                   <li className="boards-li" key={board.id}>
-                    <Link className="to-boards" to={`/board/${board.id}`}>{board.name}</Link>
+                    <Link className="to-boards" to={`/board/${board.id}`}>
+                      {board.name}
+                    </Link>
                   </li>
                 ))}
               </ul>
+              {boards.length > 10 && (
+                <button
+                  className="view-more-button"
+                  onClick={() => setShowAllBoards(!showAllBoards)}
+                >
+                  {showAllBoards ? "Show Less" : "View More"}
+                </button>
+              )}
             </div>
           </div>
         </div>
 
         <div className="container-list">
-          <h1 className="board-title">Board {boardId}</h1>
           {errorMessage && <p className="error">{errorMessage}</p>}
           {successMessage && <p className="success">{successMessage}</p>}
           <form className="list-form" onSubmit={createList}>
