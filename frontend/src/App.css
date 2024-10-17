@@ -486,7 +486,7 @@ button:hover {
 
 .container-list {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0;
   padding: 20px;
   font-family: Arial, sans-serif;
   background-color: #f4f5f7;
@@ -731,8 +731,9 @@ button:hover {
 
 .container-list {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0;
   padding: 20px;
+  margin-left: 200px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -995,9 +996,8 @@ button:hover {
 }
 
 .board-item button {
-
   padding: 20px;
- background: none;
+  background: none;
   color: #6e57e0a3;
   cursor: pointer;
 }
@@ -1099,4 +1099,66 @@ button:hover {
 .buttons-for-ved {
   display: flex;
   gap: 2px;
+}
+.left-bar {
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 0px 20px 20px 0px;
+  background-color: #a190f54b;
+  gap: 60px;
+  height: 100%;
+  width: 13vw;
+}
+.main-lists {
+  display: flex;
+  height: 100vh;
+}
+.left-bar h1 {
+  font-family: sans-serif;
+  color: rgb(255, 255, 255);
+  font-size: 30px;
+  margin: 0;
+}
+.boards-option {
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.profile-details-list {
+  display: flex;
+  align-items: center;
+}
+.to-boards {
+  text-decoration: none;
+  color: #000000;
+}
+.boards-listed {
+  display: flex;
+  justify-content: center;
+  text-align: left;
+  flex-direction: column;
+  gap: 0px;
+}
+.boards-listed p {
+  margin: 0;
+  font-size: 25px;
+  font-family: sans-serif;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.boards-li {
+  font-size: 18px;
+  list-style: none;
+  color: black;
+  padding: 0;
+}
+.boards-listed ul {
+  padding: 0;
 }

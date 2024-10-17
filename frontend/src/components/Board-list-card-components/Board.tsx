@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CardComponent from "./CardComponent";
 import { CardFetch } from "./CardFetch";
+import { faListOl } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const BoardPage: React.FC = () => {
   const { boardId } = useParams<{ boardId: string }>();
   const [lists, setLists] = useState<any[]>([]);
+  const [boards, setBoards] = useState<any[]>([]);
   const [listTitle, setListTitle] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [username, setUsername] = useState<string>("");
+
+  const fetchUsername = () => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  };
 
   const fetchLists = async () => {
     const token = localStorage.getItem("token");
@@ -52,39 +63,94 @@ const BoardPage: React.FC = () => {
   useEffect(() => {
     fetchLists();
   }, [boardId]);
+  const fetchBoards = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/board/getBoard`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setBoards(response.data);
+    } catch (error) {
+      console.error("Error fetching boards:", error);
+      setErrorMessage("Failed to fetch boards. Please try again later.");
+    }
+  };
+  useEffect(() => {
+    fetchBoards();
+    fetchUsername()
+    if (boardId) {
+      fetchLists();
+    }
+  }, [boardId]);
 
   return (
-    <div className="container-list">
-      <h1 className="board-title">Board {boardId}</h1>
-      {errorMessage && <p className="error">{errorMessage}</p>}
-      {successMessage && <p className="success">{successMessage}</p>}
-      <form className="list-form" onSubmit={createList}>
-        <input
-          type="text"
-          className="list-input"
-          placeholder="List Title"
-          value={listTitle}
-          onChange={(e) => setListTitle(e.target.value)}
-          required
-        />
-        <button type="submit" className="add-list-button">
-          Add List
-        </button>
-      </form>
-      <h2 className="lists-header">Lists</h2>
-      <ul className="lists-container">
-        {lists.length > 0 ? (
-          lists.map((list) => (
-            <li key={list.id} className="list-item">
-              {list.name}
-              <CardFetch listId={list.id} />
-            </li>
-          ))
-        ) : (
-          <li className="no-lists">No lists available.</li>
-        )}
-      </ul>
-    </div>
+    <>
+      <div className="main-lists">
+        <div className="left-bar">
+          <div className="profile-picture-list">
+          {username && (
+            <div className="profile-details-list">
+              <div className="avatar">{username.charAt(0).toUpperCase()}</div>
+              <h2>{username}</h2>
+            </div>
+          )}
+        </div>
+          <div className="options">
+            <div className="boards-option">
+              <FontAwesomeIcon icon={faListOl} />
+              <Link className="to-boards" to={"/profile"}> Boards</Link>
+            </div>
+            <div className="boards-listed">
+              <p>Your Boards</p>
+              <ul>
+                {boards.map((board) => (
+                  <li className="boards-li" key={board.id}>
+                    <Link className="to-boards" to={`/board/${board.id}`}>{board.name}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="container-list">
+          <h1 className="board-title">Board {boardId}</h1>
+          {errorMessage && <p className="error">{errorMessage}</p>}
+          {successMessage && <p className="success">{successMessage}</p>}
+          <form className="list-form" onSubmit={createList}>
+            <input
+              type="text"
+              className="list-input"
+              placeholder="List Title"
+              value={listTitle}
+              onChange={(e) => setListTitle(e.target.value)}
+              required
+            />
+            <button type="submit" className="add-list-button">
+              Add List
+            </button>
+          </form>
+          <h2 className="lists-header">Lists</h2>
+          <ul className="lists-container">
+            {lists.length > 0 ? (
+              lists.map((list) => (
+                <li key={list.id} className="list-item">
+                  {list.name}
+                  <CardFetch listId={list.id} />
+                </li>
+              ))
+            ) : (
+              <li className="no-lists">No lists available.</li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </>
   );
 };
 
