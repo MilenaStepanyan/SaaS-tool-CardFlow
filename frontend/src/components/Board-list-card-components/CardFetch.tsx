@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Checklist from "./CheckList";
 import Comments from "./Comments";
 
+
 interface Card {
   id: number;
   title: string;
@@ -14,121 +15,129 @@ interface CardFetchProps {
 }
 
 export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
-  const [error, setError] = useState<string | null>(null);
   const [cards, setCards] = useState<Card[]>([]);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
   const [cardTitle, setCardTitle] = useState<string>("");
+  const [cardDescription, setCardDescription] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-
-    const fetchCards = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setError("Unauthorized: No token found.");
-          setLoading(false);
-          return;
-        }
-
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/lists/${listId}/cards`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.data.cards) {
-          setCards(response.data.cards);
-        } else {
-          setError("No cards found");
-        }
-      } catch (err) {
-        setError("An unexpected error occurred");
-      } finally {
+  const fetchCards = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Unauthorized: No token found.");
         setLoading(false);
+        return;
       }
-    };
 
-    const createCard = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const token = localStorage.getItem("token");
-        try {
-          await axios.post(
-            `http://localhost:4000/api/lists/${listId}/cards`,
-            { title: cardTitle },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setCardTitle("");
-          fetchCards();
-        } catch (error) {
-          setError("Failed to create list. Please try again.");
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/lists/${listId}/cards`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      };
+      );
 
-      useEffect(() => {
-        fetchCards();
-      }, [listId]);
-    
+      if (response.data.cards) {
+        setCards(response.data.cards);
+      } else {
+        setError("No cards found");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createCard = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    try {
+      await axios.post(
+        `http://localhost:4000/api/lists/${listId}/cards`,
+        { title: cardTitle },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCardTitle("");
+      fetchCards();
+    } catch (error) {
+      setError("Failed to create card. Please try again.");
+    }
+  };
+
   const handleCardClick = (cardId: number) => {
     setSelectedCardId(cardId);
+    setIsModalOpen(true);
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCardId(null);
+  };
+
+  useEffect(() => {
+    fetchCards();
+  }, [listId]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <>
-    <form className="list-form" onSubmit={createCard}>
-       <input
+      <form className="card-form" onSubmit={createCard}>
+        <input
           type="text"
-          className="list-input"
+          className="card-input"
           placeholder="Card Title"
           value={cardTitle}
           onChange={(e) => setCardTitle(e.target.value)}
           required
         />
-        <button type="submit" className="add-list-button">
+        <button type="submit" className="add-card-button">
           Add Card
         </button>
       </form>
-      <h2 className="lists-header">Lists</h2>
-      <ul className="lists-container">
-        {cards.length > 0 ? (
-          cards.map((card) => (
-            <li key={card.id} className="list-item"  onClick={() => handleCardClick(card.id)}>
-              {card.title}
-            </li>
-          ))
-        ) : (
-          <li className="no-lists">No Cards available.</li>
-        )}
+      <ul className="card-list">
+        {cards.map((card) => (
+          <li
+            key={card.id}
+            className="card-item"
+            onClick={() => handleCardClick(card.id)}
+          >
+            {card.title}
+          </li>
+        ))}
       </ul>
-     {/* <div className="card-list">
-      {cards.map((card) => (
-        <div
-          className="card-item"
-          key={card.id}
-          onClick={() => handleCardClick(card.id)}
-        >
-          <h3>{card.name}</h3>
-          {card.description && <p>{card.description}</p>}
+
+      {isModalOpen && selectedCardId && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="close-button" onClick={closeModal}>
+              &times;
+            </button>
+            <h2>Edit Card</h2>
+
+
+            <input
+              type="text"
+              className="card-description"
+              placeholder="Description"
+              value={cardDescription}
+              onChange={(e) => setCardDescription(e.target.value)}
+            />
+            <Checklist cardId={selectedCardId.toString()} />
+            <Comments cardId={selectedCardId.toString()} />
+          </div>
         </div>
-      ))}
-*/}
-      {selectedCardId && (
-        <>
-          <Checklist cardId={selectedCardId.toString()} />
-          <Comments cardId={selectedCardId.toString()} />
-        </>
       )}
-   
     </>
-   
   );
 };

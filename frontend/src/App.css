@@ -490,10 +490,7 @@ button:hover {
   color: #38a169;
 }
 
-.lists-container {
-  list-style: none;
-  padding: 0;
-}
+
 
 .no-lists {
   color: #a0aec0;
@@ -683,11 +680,6 @@ button:hover {
 
 .lists-container {
   list-style-type: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
 }
 
 .no-lists {
@@ -991,7 +983,7 @@ button:hover {
 }
 .main-lists {
   display: flex;
-  height: 100vh;
+  height: 96vh;
 }
 .left-bar h1 {
   font-family: sans-serif;
@@ -1050,4 +1042,75 @@ button:hover {
 }
 .view-more-button:hover {
   background: none;
+}
+.lists-container{
+  background-color: #0000002f;
+  border-radius:15px;
+  padding: 20px;
+}.card-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.card-input {
+  padding: 8px;
+  margin-bottom: 5px;
+}
+
+.add-card-button {
+  padding: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.card-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.card-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.card-description {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
 }
