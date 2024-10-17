@@ -88,7 +88,7 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
        <input
           type="text"
           className="list-input"
-          placeholder="List Title"
+          placeholder="Card Title"
           value={cardTitle}
           onChange={(e) => setCardTitle(e.target.value)}
           required
