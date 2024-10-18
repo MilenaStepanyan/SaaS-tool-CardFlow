@@ -8,6 +8,7 @@ import commentRouter from "./routers/commentRouter";
 import checklistRouter from "./routers/checklistRouter";
 import itemRouter from "./routers/checklist-itemRouter";
 import teamRouter from "./routers/teamRouter";
+import descriptionRouter from "./routers/descriptionRouter";
 const app = express();
 const PORT = 4000;
 
@@ -22,6 +23,7 @@ app.use("/api/board", boardRouter);
 app.use("/api", listRouter);
 app.use("/api", cardRouter);
 app.use("/api", commentRouter);
+app.use("/api", descriptionRouter);
 app.use("/api", checklistRouter);
 app.use("/api", itemRouter);
 app.use("/api", teamRouter);
