@@ -10,22 +10,16 @@ interface ChecklistProps {
   cardId: string;
 }
 
-const Checklist: React.FC<ChecklistProps> = ({ cardId }) => {
+const Checklists: React.FC<ChecklistProps> = ({ cardId }) => {
   const [checklists, setChecklists] = useState<Checklist[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchChecklists = async () => {
       try {
         const token = localStorage.getItem("token");
-        if (!token) {
-          setError("Unauthorized: No token found.");
-          setLoading(false);
-          return;
-        }
-
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/cards/${cardId}/checklists`,
           {
@@ -36,28 +30,21 @@ const Checklist: React.FC<ChecklistProps> = ({ cardId }) => {
         if (response.data && response.data.checklists) {
           setChecklists(response.data.checklists);
         } else {
-          setError("No checklists found.");
+          setChecklists([]);
         }
-      } catch (err: any) {
-        setError(err.response?.data?.message || "An error occurred while fetching checklists.");
+      } catch (err) {
+        console.error("Error fetching checklists:", err);
+        setError("An error occurred while fetching checklists.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchChecklists();
   }, [cardId]);
 
-  const createChecklist = async () => {
-    if (!name.trim()) return;
-
+  const addChecklist = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        setError("Unauthorized: No token found.");
-        return;
-      }
-
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/cards/${cardId}/checklists`,
         { name },
@@ -66,12 +53,16 @@ const Checklist: React.FC<ChecklistProps> = ({ cardId }) => {
         }
       );
 
-      if (response.data.checklist) {
-        setChecklists((prev) => [...prev, response.data.checklist]);
-        setName("");
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "An error occurred while creating a checklist.");
+      const newChecklist = {
+        id: response.data.checklistId,
+        name:name
+      };
+
+      setChecklists((prev) => [...prev, newChecklist]);
+      setName("");
+    } catch (err) {
+      console.error("Error adding checklist:", err);
+      setError("An error occurred while adding a checklist.");
     }
   };
 
@@ -86,17 +77,17 @@ const Checklist: React.FC<ChecklistProps> = ({ cardId }) => {
           <div key={checklist.id}>{checklist.name}</div>
         ))
       ) : (
-        <p>No checklists available</p>
+        <p>No checklists available for this card.</p>
       )}
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Checklist name"
+        placeholder="Checklist item"
       />
-      <button onClick={createChecklist}>Create Checklist</button>
+      <button onClick={addChecklist}>Add Checklist</button>
     </div>
   );
 };
 
-export default Checklist;
+export default Checklists;
