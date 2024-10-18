@@ -10,7 +10,7 @@ export const createCard = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { title, description } = req.body;
+    const { title } = req.body;
     const { listId } = req.params;
     if (!title || !listId) {
       return res
@@ -26,8 +26,8 @@ export const createCard = async (
       return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "List not found" });
     }
     const [result] = await promisePool.query<ResultSetHeader>(
-      `INSERT INTO cards (title, description,list_id, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())`,
-      [title, description || null, listId]
+      `INSERT INTO cards (title,list_id, created_at, updated_at) VALUES (?, ?, NOW(), NOW())`,
+      [title, listId]
     );
     return res.status(STATUS_CODES.OK).json({ cardId: result.insertId });
   } catch (error) {
@@ -92,18 +92,21 @@ export const getCardById = async (
       .json({ msg: "Server Error" });
   }
 };
-export const updateCard = async (req: Request, res: Response):Promise<Response> => {
+export const updateCard = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
     const { cardId } = req.params;
-    const { title, description } = req.body;
+    const { title } = req.body;
     if (!title) {
       return res
         .status(STATUS_CODES.BAD_REQUEST)
         .json({ msg: "Missing required fields" });
     }
     const [result] = await promisePool.query<ResultSetHeader>(
-      `UPDATE cards SET name = ?,description = ?, updated_at = NOW() WHERE id = ?`,
-      [title, description || null, cardId]
+      `UPDATE cards SET title = ?,updated_at = NOW() WHERE id = ?`,
+      [title, cardId]
     );
     if (result.affectedRows === 0) {
       return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Card not found" });
@@ -118,19 +121,26 @@ export const updateCard = async (req: Request, res: Response):Promise<Response> 
       .json({ msg: "Server Error" });
   }
 };
-export const deleteCard = async(req:Request,res:Response):Promise<Response>=>{
-    try{
-        const {cardId} = req.params
-        const [result] = await promisePool.query<ResultSetHeader>(
-            `DELETE FROM cards WHERE id = ?`,
-            [cardId] 
-        )
-        if(result.affectedRows===0){
-            return res.status(STATUS_CODES.NOT_FOUND).json({msg:"Card not found"})
-        }
-        return res.status(STATUS_CODES.OK).json({msg:"Card deleted successfully"})
-    }catch(error){
-        console.log(error);
-        return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({msg:"Server Error"})
+export const deleteCard = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { cardId } = req.params;
+    const [result] = await promisePool.query<ResultSetHeader>(
+      `DELETE FROM cards WHERE id = ?`,
+      [cardId]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Card not found" });
     }
-}
+    return res
+      .status(STATUS_CODES.OK)
+      .json({ msg: "Card deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(STATUS_CODES.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server Error" });
+  }
+};

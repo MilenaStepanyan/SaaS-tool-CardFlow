@@ -14,6 +14,7 @@ const BoardPage: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [username, setUsername] = useState<string>("");
   const [showAllBoards, setShowAllBoards] = useState<boolean>(false);
+  const [showListModal, setShowListModal] = useState<boolean>(false); 
 
   const fetchUsername = () => {
     const storedUsername = localStorage.getItem("username");
@@ -55,14 +56,20 @@ const BoardPage: React.FC = () => {
       setListTitle("");
       setSuccessMessage("List created successfully!");
       fetchLists();
+      setShowListModal(false);
     } catch (error) {
       setErrorMessage("Failed to create list. Please try again.");
     }
   };
 
   useEffect(() => {
-    fetchLists();
+    fetchBoards();
+    fetchUsername();
+    if (boardId) {
+      fetchLists();
+    }
   }, [boardId]);
+
   const fetchBoards = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -80,14 +87,9 @@ const BoardPage: React.FC = () => {
       setErrorMessage("Failed to fetch boards. Please try again later.");
     }
   };
-  useEffect(() => {
-    fetchBoards();
-    fetchUsername();
-    if (boardId) {
-      fetchLists();
-    }
-  }, [boardId]);
+
   const displayedBoards = showAllBoards ? boards : boards.slice(0, 10);
+
   return (
     <>
       <div className="main-lists">
@@ -104,7 +106,6 @@ const BoardPage: React.FC = () => {
             <div className="boards-option">
               <FontAwesomeIcon icon={faListOl} />
               <Link className="to-boards" to={"/profile"}>
-                {" "}
                 Boards
               </Link>
             </div>
@@ -134,34 +135,57 @@ const BoardPage: React.FC = () => {
         <div className="container-list">
           {errorMessage && <p className="error">{errorMessage}</p>}
           {successMessage && <p className="success">{successMessage}</p>}
-          <form className="list-form" onSubmit={createList}>
-            <input
-              type="text"
-              className="list-input"
-              placeholder="List Title"
-              value={listTitle}
-              onChange={(e) => setListTitle(e.target.value)}
-              required
-            />
-            <button type="submit" className="add-list-button">
-              Add List
-            </button>
-          </form>
           <h2 className="lists-header">Lists</h2>
           <ul className="lists-container">
             {lists.length > 0 ? (
               lists.map((list) => (
                 <li key={list.id} className="list-item">
-                  {list.name}
+                  <h1>{list.name}</h1>
                   <CardFetch listId={list.id} />
                 </li>
               ))
             ) : (
               <li className="no-lists">No lists available.</li>
             )}
+
+            <li
+              className="dotted-create-list"
+              onClick={() => setShowListModal(true)}
+            >
+              <span className="icon">+</span>
+            </li>
           </ul>
         </div>
       </div>
+
+
+      {showListModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Create New List</h3>
+            <input
+              type="text"
+              placeholder="List Title"
+              value={listTitle}
+              onChange={(e) => setListTitle(e.target.value)}
+              className="input-field"
+            />
+            <div className="bttns">
+              <button onClick={createList} className="create-list-btn">
+                Create
+              </button>
+              <button
+                onClick={() => setShowListModal(false)}
+                className="close-modal-btn"
+              >
+                Close
+              </button>
+            </div>
+
+            {errorMessage && <p className="error">{errorMessage}</p>}
+          </div>
+        </div>
+      )}
     </>
   );
 };

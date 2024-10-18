@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 interface Comment {
   id: number;
   content: string;
+  userId: number; // Adjusted for userId
 }
 
 interface CommentsProps {
@@ -43,7 +44,10 @@ const Comments: React.FC<CommentsProps> = ({ cardId }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setComments((prev) => [...prev, { id: response.data.commentId, content }]);
+      setComments((prev) => [
+        ...prev,
+        { id: response.data.commentId, content, userId: response.data.userId },
+      ]);
       setContent("");
     } catch (err) {
       setError("An error occurred while adding a comment.");
@@ -56,7 +60,9 @@ const Comments: React.FC<CommentsProps> = ({ cardId }) => {
     <div>
       <h2>Comments</h2>
       {comments.map((comment) => (
-        <div key={comment.id}>{comment.content}</div>
+        <div key={comment.id}>
+          <strong>User {comment.userId}:</strong> {comment.content}
+        </div>
       ))}
       <input
         type="text"

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Checklist from "./CheckList";
 import Comments from "./Comments";
 
-
 interface Card {
   id: number;
   title: string;
@@ -47,18 +46,50 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
         setError("No cards found");
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      console.error(err);
+      setError((err as any).message || "An unexpected error occurred");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateCardDescription = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Unauthorized: No token found.");
+      return;
+    }
+    try {
+      if (selectedCardId) {
+        await axios.put(
+          `${import.meta.env.VITE_API_URL}/cards/${selectedCardId}`,
+          { description: cardDescription },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        fetchCards();
+        closeModal();
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Failed to update the card description. Please try again.");
     }
   };
 
   const createCard = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Unauthorized: No token found.");
+      return;
+    }
     try {
       await axios.post(
-        `http://localhost:4000/api/lists/${listId}/cards`,
+        `${import.meta.env.VITE_API_URL}/lists/${listId}/cards`,
         { title: cardTitle },
         {
           headers: {
@@ -69,13 +100,19 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
       setCardTitle("");
       fetchCards();
     } catch (error) {
+      console.error(error);
       setError("Failed to create card. Please try again.");
     }
   };
 
   const handleCardClick = (cardId: number) => {
-    setSelectedCardId(cardId);
-    setIsModalOpen(true);
+    const selectedCard = cards.find((card) => card.id === cardId);
+    if (selectedCard) {
+      setSelectedCardId(cardId);
+      setCardTitle(selectedCard.title);
+      setCardDescription(selectedCard.description || "");
+      setIsModalOpen(true);
+    }
   };
 
   const closeModal = () => {
@@ -92,6 +129,17 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
 
   return (
     <>
+      <ul className="card-list">
+        {cards.map((card) => (
+          <li
+            key={card.id}
+            className="card-item"
+            onClick={() => handleCardClick(card.id)}
+          >
+            {card.title}
+          </li>
+        ))}
+      </ul>
       <form className="card-form" onSubmit={createCard}>
         <input
           type="text"
@@ -105,18 +153,6 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
           Add Card
         </button>
       </form>
-      <ul className="card-list">
-        {cards.map((card) => (
-          <li
-            key={card.id}
-            className="card-item"
-            onClick={() => handleCardClick(card.id)}
-          >
-            {card.title}
-          </li>
-        ))}
-      </ul>
-
       {isModalOpen && selectedCardId && (
         <div className="modal-overlay">
           <div className="modal">
@@ -124,15 +160,16 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
               &times;
             </button>
             <h2>Edit Card</h2>
-
-
-            <input
-              type="text"
-              className="card-description"
-              placeholder="Description"
-              value={cardDescription}
-              onChange={(e) => setCardDescription(e.target.value)}
-            />
+            <form onSubmit={updateCardDescription}>
+              <textarea
+                className="card-description"
+                placeholder="Description"
+                value={cardDescription}
+                onChange={(e) => setCardDescription(e.target.value)}
+                required
+              />
+              <button type="submit">Save</button>
+            </form>
             <Checklist cardId={selectedCardId.toString()} />
             <Comments cardId={selectedCardId.toString()} />
           </div>

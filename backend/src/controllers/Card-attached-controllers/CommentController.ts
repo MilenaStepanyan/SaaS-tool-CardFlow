@@ -4,17 +4,21 @@ import promisePool from "../../pool-connection/database";
 import { ResultSetHeader } from "mysql2";
 import { RowDataPacket } from "mysql2";
 
-export const addComment = async (req: Request, res: Response) => {
+export const addComment = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
-    const { cardId } = req.params;
     const { content } = req.body;
-    const userId = req.user;
-    if (!content || !cardId || !userId) {
+    const { cardId } = req.params;
+
+    if (!content || !cardId) {
       return res
         .status(STATUS_CODES.BAD_REQUEST)
         .json({ msg: "Missing required fields" });
     }
-    const [cardExist]: [RowDataPacket[], any] = await promisePool.query(
+
+    const [cardExist] = await promisePool.query<RowDataPacket[]>(
       `SELECT id FROM cards WHERE id = ?`,
       [cardId]
     );
@@ -22,13 +26,16 @@ export const addComment = async (req: Request, res: Response) => {
     if (cardExist.length === 0) {
       return res.status(STATUS_CODES.NOT_FOUND).json({ msg: "Card not found" });
     }
+
     const [result] = await promisePool.query<ResultSetHeader>(
-      `INSERT INTO comments (content, card_id, user_id, created_at) VALUES (?, ?, ?, NOW())`,
-      [content, cardId, userId]
+      `INSERT INTO comments (content, card_id, created_at) VALUES (?, ?, NOW())`,
+      [content, cardId]
     );
-    return res
-      .status(STATUS_CODES.CREATED)
-      .json({ msg: "Comment added successfully", commentId: result.insertId });
+
+    return res.status(STATUS_CODES.CREATED).json({
+      commentId: result.insertId,
+      msg: "Comment created successfully",
+    });
   } catch (error) {
     console.log(error);
     return res
@@ -107,16 +114,16 @@ export const deleteComment = async (
   try {
     const { commentId } = req.params;
     const [commentExist] = await promisePool.query<RowDataPacket[]>(
-        `SELECT id FROM comments WHERE id = ?`,
-        [commentId]
-      );
-  
-      if (commentExist.length === 0) {
-        return res
-          .status(STATUS_CODES.NOT_FOUND)
-          .json({ msg: "Comment not found" });
-      }
-  
+      `SELECT id FROM comments WHERE id = ?`,
+      [commentId]
+    );
+
+    if (commentExist.length === 0) {
+      return res
+        .status(STATUS_CODES.NOT_FOUND)
+        .json({ msg: "Comment not found" });
+    }
+
     const [result] = await promisePool.query<ResultSetHeader>(
       `DELETE FROM comments WHERE id = ?`,
       [commentId]
