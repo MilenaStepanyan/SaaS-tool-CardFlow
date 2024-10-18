@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 interface Comment {
   id: number;
   content: string;
-  userId: number; // Adjusted for userId
 }
 
 interface CommentsProps {
@@ -46,7 +45,7 @@ const Comments: React.FC<CommentsProps> = ({ cardId }) => {
       );
       setComments((prev) => [
         ...prev,
-        { id: response.data.commentId, content, userId: response.data.userId },
+        { id: response.data.commentId, content},
       ]);
       setContent("");
     } catch (err) {
@@ -61,7 +60,7 @@ const Comments: React.FC<CommentsProps> = ({ cardId }) => {
       <h2>Comments</h2>
       {comments.map((comment) => (
         <div key={comment.id}>
-          <strong>User {comment.userId}:</strong> {comment.content}
+       {comment.content}
         </div>
       ))}
       <input

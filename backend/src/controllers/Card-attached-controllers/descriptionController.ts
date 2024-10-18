@@ -9,10 +9,10 @@ export const addDescription = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { description } = req.body;
+    const { content } = req.body;
     const { cardId } = req.params;
 
-    if (!description || !cardId) {
+    if (!content || !cardId) {
       return res
         .status(STATUS_CODES.BAD_REQUEST)
         .json({ msg: "Missing required fields" });
@@ -29,7 +29,7 @@ export const addDescription = async (
 
     const [result] = await promisePool.query<ResultSetHeader>(
       `INSERT INTO descriptions (description, card_id, created_at) VALUES (?, ?, NOW())`,
-      [description, cardId]
+      [content, cardId]
     );
 
     return res.status(STATUS_CODES.CREATED).json({
@@ -68,7 +68,7 @@ export const getDescription = async (
       `SELECT * FROM descriptions WHERE card_id = ?`,
       [cardId]
     );
-    return res.status(STATUS_CODES.OK).json({ comments: rows || [] });
+    return res.status(STATUS_CODES.OK).json({ descriptions: rows || [] });
   } catch (error) {
     console.log(error);
     return res

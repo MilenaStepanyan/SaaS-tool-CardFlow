@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Checklist from "./CheckList";
 import Comments from "./Comments";
+import Descriptions from "./Descriptions";
 
 interface Card {
   id: number;
@@ -17,7 +18,6 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
   const [cards, setCards] = useState<Card[]>([]);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
   const [cardTitle, setCardTitle] = useState<string>("");
-  const [cardDescription, setCardDescription] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,33 +53,6 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
     }
   };
 
-  const updateCardDescription = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setError("Unauthorized: No token found.");
-      return;
-    }
-    try {
-      if (selectedCardId) {
-        await axios.put(
-          `${import.meta.env.VITE_API_URL}/cards/${selectedCardId}`,
-          { description: cardDescription },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        fetchCards();
-        closeModal();
-      }
-    } catch (error) {
-      console.error(error);
-      setError("Failed to update the card description. Please try again.");
-    }
-  };
-
   const createCard = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
@@ -110,7 +83,6 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
     if (selectedCard) {
       setSelectedCardId(cardId);
       setCardTitle(selectedCard.title);
-      setCardDescription(selectedCard.description || "");
       setIsModalOpen(true);
     }
   };
@@ -160,18 +132,9 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
               &times;
             </button>
             <h2>Edit Card</h2>
-            <form onSubmit={updateCardDescription}>
-              <textarea
-                className="card-description"
-                placeholder="Description"
-                value={cardDescription}
-                onChange={(e) => setCardDescription(e.target.value)}
-                required
-              />
-              <button type="submit">Save</button>
-            </form>
             <Checklist cardId={selectedCardId.toString()} />
             <Comments cardId={selectedCardId.toString()} />
+            <Descriptions cardId={selectedCardId.toString()} />
           </div>
         </div>
       )}
