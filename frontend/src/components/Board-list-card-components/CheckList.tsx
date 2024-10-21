@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import ChecklistItems from "./ChecklistItems";
 interface Checklist {
   id: number;
   name: string;
@@ -55,7 +55,7 @@ const Checklists: React.FC<ChecklistProps> = ({ cardId }) => {
 
       const newChecklist = {
         id: response.data.checklistId,
-        name:name
+        name: name,
       };
 
       setChecklists((prev) => [...prev, newChecklist]);

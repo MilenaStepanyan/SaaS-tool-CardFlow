@@ -8,6 +8,7 @@ interface Card {
   id: number;
   title: string;
   description?: string;
+  created_at: number;
 }
 
 interface CardFetchProps {
@@ -21,7 +22,13 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [username, setUsername] = useState<string>("");
+  const fetchUsername = () => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  };
   const fetchCards = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -94,6 +101,7 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
 
   useEffect(() => {
     fetchCards();
+    fetchUsername();
   }, [listId]);
 
   if (loading) return <div>Loading...</div>;
@@ -128,10 +136,25 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
       {isModalOpen && selectedCardId && (
         <div className="modal-overlay">
           <div className="modal">
+            <div className="profile-picture-list">
+              {username && (
+                <div className="profile-details-list">
+                  <div className="avatar">
+                    {username.charAt(0).toUpperCase()}
+                  </div>
+                  <h2>{username} added this card</h2>
+                  <p className="date">
+                    {new Date(
+                      cards.find((card) => card.id === selectedCardId)
+                        ?.created_at || 0
+                    ).toLocaleString()}
+                  </p>
+                </div>
+              )}
+            </div>
             <button className="close-button" onClick={closeModal}>
               &times;
             </button>
-            <h2>Edit Card</h2>
             <Descriptions cardId={selectedCardId.toString()} />
             <Checklist cardId={selectedCardId.toString()} />
             <Comments cardId={selectedCardId.toString()} />
