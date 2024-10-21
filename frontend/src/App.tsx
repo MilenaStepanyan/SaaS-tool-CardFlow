@@ -6,18 +6,21 @@ import { Login } from "./components/Auth/Login";
 import { Register } from "./components/Auth/Register";
 import Boards from "./components/Board-list-card-components/Board";
 import { ProfileHeader } from "./components/Profile/ProfileHeader";
+import { ThemeProvider } from "./components/ThemeContext";
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/board/:boardId" element={<Boards />} />
-        <Route path="/profile" element={<ProfileHeader />} />
-      </Routes>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/board/:boardId" element={<Boards />} />
+          <Route path="/profile" element={<ProfileHeader />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 };
 

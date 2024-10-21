@@ -1272,3 +1272,11 @@ button:hover {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.close-button{
+  color: #000000;
+  background: none;
+}
+.close-button:hover{
+  background: none;
+}

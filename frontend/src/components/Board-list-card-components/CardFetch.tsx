@@ -132,9 +132,9 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
               &times;
             </button>
             <h2>Edit Card</h2>
+            <Descriptions cardId={selectedCardId.toString()} />
             <Checklist cardId={selectedCardId.toString()} />
             <Comments cardId={selectedCardId.toString()} />
-            <Descriptions cardId={selectedCardId.toString()} />
           </div>
         </div>
       )}
