@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Checklists from "./CheckList";
 import Comments from "./Comments";
 import Descriptions from "./Descriptions";
+import ChecklistComponent from "./CheckList";
 
 interface Card {
   id: number;
@@ -154,7 +154,7 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
               &times;
             </button>
             <Descriptions cardId={selectedCardId.toString()} />
-            <Checklists cardId={selectedCardId.toString()} /> 
+            <ChecklistComponent cardId={selectedCardId.toString()} /> 
             <Comments cardId={selectedCardId.toString()} />
           </div>
         </div>
