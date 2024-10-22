@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Checklist from "./CheckList";
+import Checklists from "./CheckList";
 import Comments from "./Comments";
 import Descriptions from "./Descriptions";
 
@@ -23,12 +23,14 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [username, setUsername] = useState<string>("");
+
   const fetchUsername = () => {
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setUsername(storedUsername);
     }
   };
+
   const fetchCards = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -86,12 +88,8 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
   };
 
   const handleCardClick = (cardId: number) => {
-    const selectedCard = cards.find((card) => card.id === cardId);
-    if (selectedCard) {
-      setSelectedCardId(cardId);
-      setCardTitle(selectedCard.title);
-      setIsModalOpen(true);
-    }
+    setSelectedCardId(cardId);
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
@@ -156,7 +154,7 @@ export const CardFetch: React.FC<CardFetchProps> = ({ listId }) => {
               &times;
             </button>
             <Descriptions cardId={selectedCardId.toString()} />
-            <Checklist cardId={selectedCardId.toString()} />
+            <Checklists cardId={selectedCardId.toString()} /> 
             <Comments cardId={selectedCardId.toString()} />
           </div>
         </div>

@@ -45,7 +45,7 @@ const Comments: React.FC<CommentsProps> = ({ cardId }) => {
       );
       setComments((prev) => [
         ...prev,
-        { id: response.data.commentId, content},
+        { id: response.data.commentId, content },
       ]);
       setContent("");
     } catch (err) {
@@ -59,8 +59,8 @@ const Comments: React.FC<CommentsProps> = ({ cardId }) => {
     <div>
       <h2>Comments</h2>
       {comments.map((comment) => (
-        <div key={comment.id}>
-       {comment.content}
+        <div key={comment.id} className="comment-card">
+          {comment.content}
         </div>
       ))}
       <input
